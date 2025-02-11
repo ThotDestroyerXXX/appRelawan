@@ -7,6 +7,7 @@ import {
   integer,
   pgTableCreator,
   timestamp,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 
@@ -16,7 +17,7 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `app_relawan_${name}`);
+export const createTable = pgTableCreator((name) => `${name}`);
 
 export const posts = createTable(
   "post",
@@ -27,10 +28,17 @@ export const posts = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
+
+export const MsUser = createTable("MsUser", {
+  UserId: uuid("UserId").primaryKey(),
+  Email: varchar("Email", { length: 50 }).notNull().unique(),
+  Username: varchar("Username", { length: 25 }).notNull().unique(),
+  Password: varchar("Password", { length: 50 }).notNull(),
+});
