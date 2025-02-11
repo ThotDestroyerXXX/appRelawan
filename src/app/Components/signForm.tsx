@@ -2,7 +2,6 @@ interface SignFormProps {
   label: string[];
   type: string[];
   placeholder: string[];
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   error?: string | null;
   disabled?: boolean;
 }
@@ -11,15 +10,11 @@ const SignForm: React.FC<SignFormProps> = ({
   label,
   type,
   placeholder,
-  onSubmit,
   error,
   disabled,
 }) => {
   return (
-    <form
-      onSubmit={onSubmit}
-      className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black p-14 shadow-lg"
-    >
+    <>
       {label.map((lbl, index) => (
         <div key={lbl} className="mb-4 w-screen max-w-sm">
           <label className="mb-2 block text-sm text-gray-700">{lbl}</label>
@@ -28,6 +23,7 @@ const SignForm: React.FC<SignFormProps> = ({
             placeholder={placeholder[index]}
             defaultValue={""}
             disabled={disabled}
+            name={`${lbl.toLowerCase()}`}
             className="w-full appearance-none rounded border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-green-500"
           />
         </div>
@@ -49,11 +45,11 @@ const SignForm: React.FC<SignFormProps> = ({
       <button
         type="submit"
         disabled={disabled}
-        className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500"
+        className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
       >
         Submit
       </button>
-    </form>
+    </>
   );
 };
 export default SignForm;

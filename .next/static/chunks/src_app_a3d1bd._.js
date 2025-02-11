@@ -162,10 +162,8 @@ __turbopack_esm__({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/.pnpm/next@15.1.7_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 ;
-const SignForm = ({ label, type, placeholder, onSubmit, error, disabled })=>{
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
-        onSubmit: onSubmit,
-        className: "flex flex-col items-center gap-3 rounded-lg border-[1px] border-black p-14 shadow-lg",
+const SignForm = ({ label, type, placeholder, error, disabled })=>{
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             label.map((lbl, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "mb-4 w-screen max-w-sm",
@@ -175,7 +173,7 @@ const SignForm = ({ label, type, placeholder, onSubmit, error, disabled })=>{
                             children: lbl
                         }, void 0, false, {
                             fileName: "[project]/src/app/Components/signForm.tsx",
-                            lineNumber: 25,
+                            lineNumber: 20,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -183,16 +181,17 @@ const SignForm = ({ label, type, placeholder, onSubmit, error, disabled })=>{
                             placeholder: placeholder[index],
                             defaultValue: "",
                             disabled: disabled,
+                            name: `${lbl.toLowerCase()}`,
                             className: "w-full appearance-none rounded border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-green-500"
                         }, void 0, false, {
                             fileName: "[project]/src/app/Components/signForm.tsx",
-                            lineNumber: 26,
+                            lineNumber: 21,
                             columnNumber: 11
                         }, this)
                     ]
                 }, lbl, true, {
                     fileName: "[project]/src/app/Components/signForm.tsx",
-                    lineNumber: 24,
+                    lineNumber: 19,
                     columnNumber: 9
                 }, this)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -207,7 +206,7 @@ const SignForm = ({ label, type, placeholder, onSubmit, error, disabled })=>{
                             disabled: disabled
                         }, void 0, false, {
                             fileName: "[project]/src/app/Components/signForm.tsx",
-                            lineNumber: 37,
+                            lineNumber: 33,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -216,18 +215,18 @@ const SignForm = ({ label, type, placeholder, onSubmit, error, disabled })=>{
                             children: "remember me"
                         }, void 0, false, {
                             fileName: "[project]/src/app/Components/signForm.tsx",
-                            lineNumber: 43,
+                            lineNumber: 39,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/Components/signForm.tsx",
-                    lineNumber: 36,
+                    lineNumber: 32,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/Components/signForm.tsx",
-                lineNumber: 35,
+                lineNumber: 31,
                 columnNumber: 7
             }, this),
             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -235,25 +234,21 @@ const SignForm = ({ label, type, placeholder, onSubmit, error, disabled })=>{
                 children: error
             }, void 0, false, {
                 fileName: "[project]/src/app/Components/signForm.tsx",
-                lineNumber: 48,
+                lineNumber: 44,
                 columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 type: "submit",
                 disabled: disabled,
-                className: "w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500",
+                className: "w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50",
                 children: "Submit"
             }, void 0, false, {
                 fileName: "[project]/src/app/Components/signForm.tsx",
-                lineNumber: 49,
+                lineNumber: 45,
                 columnNumber: 7
             }, this)
         ]
-    }, void 0, true, {
-        fileName: "[project]/src/app/Components/signForm.tsx",
-        lineNumber: 19,
-        columnNumber: 5
-    }, this);
+    }, void 0, true);
 };
 _c = SignForm;
 const __TURBOPACK__default__export__ = SignForm;
@@ -295,7 +290,7 @@ const SignUp = ()=>{
     const [errors, setErrors] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const { mutate, isPending } = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$trpc$2f$react$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["api"].user.signUp.useMutation({
         onSuccess () {
-            router.push("/signIn");
+            router.push("/Pages/signIn");
         },
         onError (error) {
             if (error.message) {
@@ -311,9 +306,9 @@ const SignUp = ()=>{
     const handleSubmit = (e)=>{
         e.preventDefault();
         const form = new FormData(e.currentTarget);
-        const username = form.get("Username");
-        const email = form.get("Email");
-        const password = form.get("Password");
+        const username = form.get("username");
+        const email = form.get("email");
+        const password = form.get("password");
         mutate({
             username,
             email,
@@ -348,25 +343,32 @@ const SignUp = ()=>{
                         lineNumber: 55,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$Components$2f$signForm$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        label: [
-                            "Username",
-                            "Email",
-                            "Password"
-                        ],
-                        type: [
-                            "text",
-                            "text",
-                            "password"
-                        ],
-                        placeholder: [
-                            "Enter your username",
-                            "Enter your email",
-                            "Enter your password"
-                        ],
-                        disabled: isPending,
-                        onSubmit: ()=>handleSubmit,
-                        error: errors
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                        onSubmit: handleSubmit,
+                        className: "flex flex-col items-center gap-3 rounded-lg border-[1px] border-black p-14 shadow-lg",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$7_react$2d$dom$40$18$2e$3$2e$1_react$40$18$2e$3$2e$1$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$Components$2f$signForm$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            label: [
+                                "Username",
+                                "Email",
+                                "Password"
+                            ],
+                            type: [
+                                "text",
+                                "text",
+                                "password"
+                            ],
+                            placeholder: [
+                                "Enter your username",
+                                "Enter your email",
+                                "Enter your password"
+                            ],
+                            disabled: isPending,
+                            error: errors
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/Pages/signUp/page.tsx",
+                            lineNumber: 60,
+                            columnNumber: 11
+                        }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/Pages/signUp/page.tsx",
                         lineNumber: 56,

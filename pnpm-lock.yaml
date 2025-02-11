@@ -52,6 +52,9 @@ dependencies:
     version: 3.24.1
 
 devDependencies:
+  '@types/bcrypt':
+    specifier: ^5.0.2
+    version: 5.0.2
   '@types/eslint':
     specifier: ^8.56.10
     version: 8.56.12
@@ -1045,6 +1048,12 @@ packages:
     dependencies:
       typescript: 5.7.3
     dev: false
+
+  /@types/bcrypt@5.0.2:
+    resolution: {integrity: sha512-6atioO8Y75fNcbmj0G7UjI9lXN2pQ/IGJ2FWT4a/btd0Lk9lQalHLKhkgKVZ3r+spnmWUKfbMi1GEe9wyHQfNQ==}
+    dependencies:
+      '@types/node': 20.17.17
+    dev: true
 
   /@types/eslint@8.56.12:
     resolution: {integrity: sha512-03ruubjWyOHlmljCVoxSuNDdmfZDzsrrz0P2LeJsOXr+ZwFQ+0yQIwNCwt/GYhV7Z31fgtXJTAEs+FYlEL851g==}

@@ -14,7 +14,7 @@ const SignUp = () => {
 
   const { mutate, isPending } = api.user.signUp.useMutation({
     onSuccess() {
-      router.push("/signIn");
+      router.push("/Pages/signIn");
     },
     onError(error) {
       if (error.message) {
@@ -32,9 +32,9 @@ const SignUp = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    const username = form.get("Username") as string;
-    const email = form.get("Email") as string;
-    const password = form.get("Password") as string;
+    const username = form.get("username") as string;
+    const email = form.get("email") as string;
+    const password = form.get("password") as string;
 
     mutate({
       username,
@@ -53,18 +53,22 @@ const SignUp = () => {
           className="h-11 w-11 rounded-full object-cover"
         />
         <h2 className="text-3xl font-bold">Sign Up for Free</h2>
-        <SignForm
-          label={["Username", "Email", "Password"]}
-          type={["text", "text", "password"]}
-          placeholder={[
-            "Enter your username",
-            "Enter your email",
-            "Enter your password",
-          ]}
-          disabled={isPending}
-          onSubmit={() => handleSubmit}
-          error={errors}
-        />
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black p-14 shadow-lg"
+        >
+          <SignForm
+            label={["Username", "Email", "Password"]}
+            type={["text", "text", "password"]}
+            placeholder={[
+              "Enter your username",
+              "Enter your email",
+              "Enter your password",
+            ]}
+            disabled={isPending}
+            error={errors}
+          />
+        </form>
       </div>
     </div>
   );
