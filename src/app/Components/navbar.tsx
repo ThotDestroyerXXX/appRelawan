@@ -2,13 +2,9 @@ import Image from "next/image";
 import chad from "../Assets/chad.jpg";
 import Link from "next/link";
 
-interface NavbarProps {
-  type: boolean;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ type }) => {
+const Navbar = () => {
   return (
-    <div className="flex h-16 w-full items-center justify-between border-b-2 border-black bg-sageGreen bg-white pb-2 pl-10 pr-10 pt-2 text-black">
+    <div className="flex w-full items-center justify-between border-b-2 border-black bg-white pb-2 pl-10 pr-10 pt-2 text-black">
       <div>
         <Image
           src={chad}
@@ -28,16 +24,11 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
         </Link>
       </div>
       <div>
-        <button
-          className="rounded-md bg-darkGreen pb-2 pl-4 pr-4 pt-2 text-white"
-          onClick={() =>
-            type
-              ? (window.location.href = "/Pages/signUp")
-              : (window.location.href = "/Pages/signIn")
-          }
-        >
-          {type ? "SignIn" : "SignUp"}
-        </button>
+        <Link href="/Pages/signUp">
+          <button className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white">
+            sign Up
+          </button>
+        </Link>
       </div>
     </div>
   );
