@@ -13,7 +13,7 @@ const SignUp = () => {
     const { handleSubmit, isPending, errors } = useSignUp();
     return (
         <div className="flex flex-col items-center justify-center overflow-hidden">
-            <Navbar />
+            <Navbar type={false} />
             <div className="flex flex-col items-center gap-4 pt-5 bg-cream w-full h-[calc(100vh-4rem)] overflow-hidden">
                 <Image
                     src={chad}
