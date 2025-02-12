@@ -1,7 +1,4 @@
 {
   "/page": "app/page.js",
-  "/Pages/signUp/page": "app/Pages/signUp/page.js",
-  "/api/trpc/[trpc]/route": "app/api/trpc/[trpc]/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/Pages/signIn/page": "app/Pages/signIn/page.js"
+  "/Pages/signUp/page": "app/Pages/signUp/page.js"
 }
