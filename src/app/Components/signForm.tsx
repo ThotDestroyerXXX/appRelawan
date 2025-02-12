@@ -45,7 +45,7 @@ const SignForm: React.FC<SignFormProps> = ({
       <button
         type="submit"
         disabled={disabled}
-        className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
+        className="w-full rounded bg-darkGreen px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
       >
         Submit
       </button>

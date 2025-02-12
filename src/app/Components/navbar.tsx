@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <div className="flex w-full items-center justify-between border-b-2 border-black pb-2 pl-10 pr-10 pt-2 text-black">
+      <div className="flex w-full items-center justify-between border-b-2 border-black pb-2 pl-10 pr-10 pt-2 text-black bg-sageGreen h-16">
       <div>
         <Image
           src={chad}
@@ -25,7 +25,7 @@ const Navbar = () => {
       </div>
       <div>
         <Link href="/Pages/signUp">
-          <button className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white">
+          <button className="rounded-md bg-darkGreen pb-2 pl-4 pr-4 pt-2 text-white">
             sign Up
           </button>
         </Link>
