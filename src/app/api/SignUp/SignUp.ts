@@ -12,7 +12,9 @@ export const useSignUp = () => {
   const { mutate } = api.user.signUp.useMutation({
     onSuccess() {
       setIsPending(false);
+
       router.push("/");
+      router.refresh();
     },
     onError(error) {
       if (error.message) {

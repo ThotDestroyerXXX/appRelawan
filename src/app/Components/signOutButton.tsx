@@ -13,6 +13,7 @@ const SignOutButton = () => {
         fetchOptions: {
           onSuccess: () => {
             router.push("/Pages/signIn");
+            router.refresh();
           },
         },
       });
