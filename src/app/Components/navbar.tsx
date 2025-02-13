@@ -1,16 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import chad from "../Assets/chad.jpg";
 import Link from "next/link";
+import SignOutButton from "./signOutButton";
+import { type Session } from "~/lib/auth";
 
-interface NavbarProps {
-    type: boolean;
-}
-
-const Navbar: React.FC<NavbarProps> = ({
-    type,
-}) => {
+const Navbar = ({ session }: { session: Session | null }) => {
   return (
-      <div className="flex w-full items-center justify-between border-b-2 border-black pb-2 pl-10 pr-10 pt-2 text-black bg-sageGreen h-16">
+    <div className="flex w-full items-center justify-between border-b-2 border-black bg-white pb-2 pl-10 pr-10 pt-2 text-black">
       <div>
         <Image
           src={chad}
@@ -30,10 +28,15 @@ const Navbar: React.FC<NavbarProps> = ({
         </Link>
       </div>
       <div>
-        <button className="rounded-md bg-darkGreen pb-2 pl-4 pr-4 pt-2 text-white" onClick={() => (type ? window.location.href = "/Pages/signUp" : window.location.href = "/Pages/signIn")}>
-          {type ? "SignIn" : "SignUp"}
-        </button>
-        
+        {session ? (
+          <SignOutButton />
+        ) : (
+          <Link href="/Pages/signIn">
+            <button className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white">
+              sign In
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );
