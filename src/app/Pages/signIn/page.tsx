@@ -1,20 +1,15 @@
 "use client";
 
-import Navbar from "~/app/Components/navbar";
 import SignForm from "~/app/Components/signForm";
 import Image from "next/image";
 import chad from "~/app/Assets/chad.jpg";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { api } from "~/trpc/react";
 import { useSignIn } from "../../api/SignIn/SignIn";
 
 const SignIn = () => {
-    const { handleSubmit, isPending, errors } = useSignIn();
+  const { handleSubmit, isPending, errors } = useSignIn();
   return (
-      <div className="flex flex-col items-center justify-center overflow-hidden">
-          <Navbar type={true} />
-          <div className="flex flex-col items-center gap-4 pt-5 bg-cream w-full h-[calc(100vh-4rem)] overflow-hidden">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center gap-4 pt-5">
         <Image
           src={chad}
           alt="chad"
@@ -23,7 +18,7 @@ const SignIn = () => {
         <h2 className="text-3xl font-bold">Sign In</h2>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black p-14 shadow-lg bg-sageGreen"
+          className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black p-14 shadow-lg"
         >
           <SignForm
             label={["Email", "Password"]}
