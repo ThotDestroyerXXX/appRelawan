@@ -1,10 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import chad from "../Assets/chad.jpg";
 import Link from "next/link";
+import SignOutButton from "./signOutButton";
+import { type Session } from "~/lib/auth";
 
-const Navbar = () => {
+const Navbar = ({ session }: { session: Session | null }) => {
   return (
-    <div className="flex w-full items-center justify-between border-b-2 border-black pb-2 pl-10 pr-10 pt-2 text-black">
+    <div className="flex w-full items-center justify-between border-b-2 border-black bg-white pb-2 pl-10 pr-10 pt-2 text-black">
       <div>
         <Image
           src={chad}
@@ -24,11 +28,15 @@ const Navbar = () => {
         </Link>
       </div>
       <div>
-        <Link href="/Pages/signUp">
-          <button className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white">
-            sign Up
-          </button>
-        </Link>
+        {session ? (
+          <SignOutButton />
+        ) : (
+          <Link href="/Pages/signIn">
+            <button className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white">
+              sign In
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );

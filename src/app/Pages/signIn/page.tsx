@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "~/app/Components/navbar";
 import SignForm from "~/app/Components/signForm";
 import Image from "next/image";
 import chad from "~/app/Assets/chad.jpg";
@@ -10,7 +9,6 @@ const SignIn = () => {
   const { handleSubmit, isPending, errors } = useSignIn();
   return (
     <div className="flex flex-col items-center justify-center">
-      <Navbar />
       <div className="flex flex-col items-center gap-4 pt-5">
         <Image
           src={chad}

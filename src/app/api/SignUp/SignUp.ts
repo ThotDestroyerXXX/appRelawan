@@ -2,17 +2,21 @@
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { authClient } from "~/lib/auth-client";
 
 export const useSignUp = () => {
   const router = useRouter();
   const [errors, setErrors] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
-  const { mutate, isPending } = api.user.signUp.useMutation({
+  const { mutate } = api.user.signUp.useMutation({
     onSuccess() {
-      router.push("/Pages/signIn");
+      setIsPending(false);
+      router.push("/");
     },
     onError(error) {
       if (error.message) {
+        setIsPending(false);
         setErrors(error.message);
       }
 
@@ -24,12 +28,25 @@ export const useSignUp = () => {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const username = form.get("username") as string;
     const email = form.get("email") as string;
     const password = form.get("password") as string;
+
+    await authClient.signUp.email(
+      {
+        email: email,
+        password: password,
+        name: username,
+      },
+      {
+        onRequest: () => {
+          setIsPending(true);
+        },
+      },
+    );
 
     mutate({
       username,
