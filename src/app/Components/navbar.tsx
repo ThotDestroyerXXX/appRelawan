@@ -33,16 +33,15 @@ const Navbar = ({ session }: { session: Session | null }) => {
         {session ? (
           <SignOutButton />
         ) : (
-          <button
-            className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white"
-            onClick={() =>
-              pathname == "/Pages/signIn"
-                ? (window.location.href = "/Pages/signUp")
-                : (window.location.href = "/Pages/signIn")
+          <Link
+            href={
+              pathname == "/Pages/signIn" ? "/Pages/signUp" : "/Pages/signIn"
             }
           >
-            {pathname == "/Pages/signIn" ? "Sign Up" : "Sign In"}
-          </button>
+            <button className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white">
+              {pathname == "/Pages/signIn" ? "Sign Up" : "Sign In"}
+            </button>
+          </Link>
         )}
       </div>
     </div>
