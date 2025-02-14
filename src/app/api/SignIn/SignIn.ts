@@ -16,6 +16,7 @@ export const useSignIn = () => {
 
       router.push("/");
       router.refresh();
+
     },
     onError(error) {
       if (error.message) {

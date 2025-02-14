@@ -1,10 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import chad from "../Assets/chad.jpg";
 import Link from "next/link";
-import SignOutButton from "./signOutButton";
 import { type Session } from "~/lib/auth";
+import SignOutButton from "./signOutButton";
+import { usePathname } from "next/navigation";
 
 const Navbar = ({ session }: { session: Session | null }) => {
+  const pathname = usePathname();
   return (
     <div className="flex h-16 w-full items-center justify-between border-b-2 border-black bg-sageGreen pb-2 pl-10 pr-10 pt-2 text-black">
       <div>
@@ -29,11 +33,16 @@ const Navbar = ({ session }: { session: Session | null }) => {
         {session ? (
           <SignOutButton />
         ) : (
-          <Link href="/Pages/signIn">
-            <button className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white">
-              sign In
-            </button>
-          </Link>
+          <button
+            className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white"
+            onClick={() =>
+              pathname == "/Pages/signIn"
+                ? (window.location.href = "/Pages/signUp")
+                : (window.location.href = "/Pages/signIn")
+            }
+          >
+            {pathname == "/Pages/signIn" ? "Sign Up" : "Sign In"}
+          </button>
         )}
       </div>
     </div>
