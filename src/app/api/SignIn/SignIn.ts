@@ -27,6 +27,7 @@ export const useSignIn = () => {
         onSuccess: () => {
           setIsPending(false);
           router.push("/");
+          router.refresh();
         },
         onError: (e) => {
           setIsPending(false);
