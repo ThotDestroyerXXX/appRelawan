@@ -28,6 +28,7 @@ export const useSignUp = () => {
         onSuccess: () => {
           setIsPending(false);
           router.push("/");
+          router.refresh();
         },
         onError: (e) => {
           setIsPending(false);
