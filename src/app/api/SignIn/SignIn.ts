@@ -1,6 +1,5 @@
 "use client";
 
-import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "~/lib/auth-client";
@@ -9,28 +8,6 @@ export const useSignIn = () => {
   const router = useRouter();
   const [errors, setErrors] = useState<string | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
-
-  const { mutate } = api.user.signIn.useMutation({
-    onSuccess() {
-      setIsPending(false);
-
-      router.push("/");
-      router.refresh();
-
-    },
-    onError(error) {
-      if (error.message) {
-        setIsPending(false);
-        setErrors(error.message);
-      }
-
-      const fieldErrors = error.data?.zodError?.fieldErrors;
-      if (fieldErrors && Object.keys(fieldErrors).length > 0) {
-        const firstKey = Object.keys(fieldErrors)[0]!;
-        setErrors(fieldErrors[firstKey]?.[0] ?? null);
-      }
-    },
-  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,13 +24,17 @@ export const useSignIn = () => {
         onRequest: () => {
           setIsPending(true);
         },
+        onSuccess: () => {
+          setIsPending(false);
+          router.push("/");
+          router.refresh();
+        },
+        onError: (e) => {
+          setIsPending(false);
+          setErrors(e.error.message);
+        },
       },
     );
-
-    mutate({
-      email,
-      password,
-    });
   };
   return { handleSubmit, isPending, errors };
 };
