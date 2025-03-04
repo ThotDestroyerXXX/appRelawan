@@ -3,7 +3,7 @@
 import SignForm from "~/app/Components/signForm";
 import Image from "next/image";
 import chad from "~/app/Assets/chad.jpg";
-import { useSignIn } from "../../api/SignIn/SignIn";
+import { handleSignInGoogle, useSignIn } from "../../api/SignIn/SignIn";
 
 const SignIn = () => {
   const { handleSubmit, isPending, errors } = useSignIn();
@@ -27,7 +27,9 @@ const SignIn = () => {
             disabled={isPending}
             error={errors}
           />
+          
         </form>
+        <button onClick={handleSignInGoogle}>google</button>
       </div>
     </div>
   );
