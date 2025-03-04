@@ -4,7 +4,6 @@ import { useState } from "react";
 
 const UserProfile = () => {
   const [newUsername, setNewUsername] = useState("");
-  const [message, setMessage] = useState("");
 
   return (
     <div className="flex flex-col gap-2">
@@ -18,7 +17,6 @@ const UserProfile = () => {
       <button className="rounded bg-blue-500 px-4 py-2 text-white">
         Change Username
       </button>
-      {message && <p>{message}</p>}
     </div>
   );
 };
