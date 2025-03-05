@@ -30,6 +30,7 @@ export const user = createTable("user", {
   image: text("image"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
+  organization_id: uuid("organization_id").references(() => organization.id),
 });
 
 export const session = createTable("session", {
