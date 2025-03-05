@@ -3,10 +3,14 @@
 import SignForm from "~/app/Components/signForm";
 import Image from "next/image";
 import chad from "~/app/Assets/chad.jpg";
-import { handleSignInGoogle, useSignIn } from "../../api/SignIn/SignIn";
+import { useSignIn } from "../../api/SignIn/SignIn";
+import { useState } from "react";
+import AlertModal from "~/app/Components/signUpType";
+import { FcGoogle } from "react-icons/fc";
 
 const SignIn = () => {
-  const { handleSubmit, isPending, errors } = useSignIn();
+  const { handleSubmit, handleSignInGoogle, isPending, errors } = useSignIn();
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <div className="flex flex-col items-center justify-center overflow-hidden">
       <div className="flex h-[calc(100vh-4rem)] w-full flex-col items-center gap-4 overflow-hidden bg-cream pt-5">
@@ -18,7 +22,7 @@ const SignIn = () => {
         <h2 className="text-3xl font-bold">Sign In</h2>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black bg-sageGreen p-14 shadow-lg"
+          className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
         >
           <SignForm
             label={["Email", "Password"]}
@@ -27,9 +31,28 @@ const SignIn = () => {
             disabled={isPending}
             error={errors}
           />
-          
         </form>
-        <button onClick={handleSignInGoogle}>google</button>
+        <button
+          onClick={handleSignInGoogle}
+          className="flex h-10 w-36 items-center justify-center gap-2 rounded-md bg-white text-center disabled:opacity-50"
+          disabled={isPending}
+        >
+          <FcGoogle className="h-6 w-6" />
+          google
+        </button>
+        <span>
+          Belum ada akun?{" "}
+          <button
+            className="text-blue-500"
+            data-modal-target="popup-modal"
+            data-modal-toggle="popup-modal"
+            type="button"
+            onClick={() => setModalOpen(true)}
+          >
+            Sign up
+          </button>
+        </span>
+        <AlertModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       </div>
     </div>
   );

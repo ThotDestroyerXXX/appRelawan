@@ -1,11 +1,10 @@
 "use client";
-
-import SignForm from "~/app/Components/signForm";
 import Image from "next/image";
+import { useSignUp } from "~/app/api/SignUp/SignUp";
 import chad from "~/app/Assets/chad.jpg";
-import { useSignUp } from "../../api/SignUp/SignUp";
+import SignForm from "~/app/Components/signForm";
 
-const SignUp = () => {
+const SignUpOrg = () => {
   const { handleSubmit, isPending, errors } = useSignUp();
   return (
     <div className="flex flex-col items-center justify-center overflow-hidden">
@@ -37,4 +36,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpOrg;

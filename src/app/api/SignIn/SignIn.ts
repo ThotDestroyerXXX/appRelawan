@@ -36,31 +36,44 @@ export const useSignIn = () => {
       },
     );
   };
-  return { handleSubmit, isPending, errors };
-};
-export const handleSignInGoogle = async () => {
-  await authClient.signIn.social({
-    /**
-     * The social provider id
-     * @example "github", "google", "apple"
-     */
-    provider: "google",
-    /**
-     * a url to redirect after the user authenticates with the provider
-     * @default "/"
-     */
-    callbackURL: "/",
-    /**
-     * a url to redirect if an error occurs during the sign in process
-     */
-    errorCallbackURL: "/error",
-    /**
-     * a url to redirect if the user is newly registered
-     */
-    newUserCallbackURL: "/",
-    /**
-     * disable the automatic redirect to the provider.
-     * @default false
-     */
-  });
+
+  const handleSignInGoogle = async () => {
+    await authClient.signIn.social({
+      /**
+       * The social provider id
+       * @example "github", "google", "apple"
+       */
+      provider: "google",
+      fetchOptions: {
+        onRequest: () => {
+          setIsPending(true);
+        },
+        onSuccess: () => {
+          setIsPending(false);
+        },
+        onError: (e) => {
+          setIsPending(false);
+          setErrors(e.error.message);
+        },
+      },
+      /**
+       * a url to redirect after the user authenticates with the provider
+       * @default "/"
+       */
+      callbackURL: "/",
+      /**
+       * a url to redirect if an error occurs during the sign in process
+       */
+      errorCallbackURL: "/error",
+      /**
+       * a url to redirect if the user is newly registered
+       */
+      newUserCallbackURL: "/",
+      /**
+       * disable the automatic redirect to the provider.
+       * @default false
+       */
+    });
+  };
+  return { handleSubmit, handleSignInGoogle, isPending, errors };
 };
