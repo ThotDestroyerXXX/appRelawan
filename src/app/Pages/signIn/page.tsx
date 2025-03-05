@@ -31,6 +31,19 @@ const SignIn = () => {
             disabled={isPending}
             error={errors}
           />
+          <div className="w-screen max-w-sm">
+            <div className="flex flex-row items-center gap-2">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                className="h-4 w-4"
+                disabled={isPending}
+              />
+              <label htmlFor="rememberMe" className="text-sm text-gray-700">
+                remember me
+              </label>
+            </div>
+          </div>
           <button
             type="submit"
             disabled={isPending}
