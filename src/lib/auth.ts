@@ -21,6 +21,18 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
   },
+  user: {
+    additionalFields: {
+      organization_id: {
+        type: "string",
+        required: false,
+        references: {
+          model: "organization",
+          field: "id",
+        },
+      },
+    },
+  },
 });
 
 export type Session = typeof auth.$Infer.Session;
