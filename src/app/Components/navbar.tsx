@@ -25,20 +25,6 @@ const Navbar = ({ session }: { session: Session | null }) => {
         <Link href="/">
           <button className="rounded-md pb-2 pl-4 pr-4 pt-2">Home</button>
         </Link>
-        {!session && (
-          <>
-            <Link href="/Pages/signIn">
-              <button className="rounded-md pb-2 pl-4 pr-4 pt-2">
-                Sign In
-              </button>
-            </Link>
-            <Link href="/Pages/signUp">
-              <button className="rounded-md pb-2 pl-4 pr-4 pt-2">
-                Sign Up
-              </button>
-            </Link>
-          </>
-        )}
       </div>
       <div className="flex items-center gap-4">
         {session ? (
@@ -49,14 +35,14 @@ const Navbar = ({ session }: { session: Session | null }) => {
             <SignOutButton />
           </>
         ) : (
-          <Link href={pathname == "/Pages/signUp" ? "/Pages/signIn" : ""}>
+          <Link href={pathname != "/Pages/signIn" ? "/Pages/signIn" : ""}>
             <button
               className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white"
-              data-modal-target={`${pathname != "/Pages/signUp" ? "popup-modal" : ""}`}
-              data-modal-toggle={`${pathname != "/Pages/signUp" ? "popup-modal" : ""}`}
+              data-modal-target={`${pathname == "/Pages/signIn" ? "popup-modal" : ""}`}
+              data-modal-toggle={`${pathname == "/Pages/signIn" ? "popup-modal" : ""}`}
               type="button"
               onClick={() => {
-                if (pathname != "/Pages/signUp") {
+                if (pathname == "/Pages/signIn") {
                   setModalOpen(true);
                 } else {
                   setModalOpen(false);

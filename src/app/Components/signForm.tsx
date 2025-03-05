@@ -42,13 +42,6 @@ const SignForm: React.FC<SignFormProps> = ({
         </div>
       </div>
       {error && <p className="text-red-500">{error}</p>}
-      <button
-        type="submit"
-        disabled={disabled}
-        className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
-      >
-        Submit
-      </button>
     </>
   );
 };

@@ -17,7 +17,7 @@ const SignUp = () => {
         />
         <h2 className="text-3xl font-bold">Sign Up for Free</h2>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={() => handleSubmit}
           className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
         >
           <SignForm
@@ -31,6 +31,13 @@ const SignUp = () => {
             disabled={isPending}
             error={errors}
           />
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
+          >
+            Submit
+          </button>
         </form>
       </div>
     </div>
