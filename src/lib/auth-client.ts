@@ -4,12 +4,7 @@ export const authClient = createAuthClient({
 });
 
 const signIn = async () => {
-    //const microsoftData = await authClient.signIn.social({
-    //    provider: "microsoft",
-    //    callbackURL: "/page.tsx"
-    //});
-
-    const data = await authClient.signIn.social({
-        provider: "google"
-    });
-}
+  const data = await authClient.signIn.social({
+    provider: "google",
+  });
+};
