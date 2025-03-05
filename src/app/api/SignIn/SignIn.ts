@@ -63,6 +63,4 @@ export const handleSignInGoogle = async () => {
      * @default false
      */
   });
-  const { data: session } = await authClient.getSession();
-  console.log(session);
 };
