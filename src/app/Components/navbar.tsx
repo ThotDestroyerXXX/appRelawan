@@ -11,7 +11,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
   const pathname = usePathname();
   return (
     <div className="flex h-16 w-full items-center justify-between border-b-2 border-black bg-sageGreen pb-2 pl-10 pr-10 pt-2 text-black">
-      <div>
+      <div className="flex items-center gap-3">
         <Image
           src={chad}
           alt="chad"
@@ -22,16 +22,29 @@ const Navbar = ({ session }: { session: Session | null }) => {
         <Link href="/">
           <button className="rounded-md pb-2 pl-4 pr-4 pt-2">Home</button>
         </Link>
-        <Link href="/Pages/signIn">
-          <button className="rounded-md pb-2 pl-4 pr-4 pt-2">sign In</button>
-        </Link>
-        <Link href="/Pages/signUp">
-          <button className="rounded-md pb-2 pl-4 pr-4 pt-2">sign Up</button>
-        </Link>
+        {!session && (
+          <>
+            <Link href="/Pages/signIn">
+              <button className="rounded-md pb-2 pl-4 pr-4 pt-2">
+                Sign In
+              </button>
+            </Link>
+            <Link href="/Pages/signUp">
+              <button className="rounded-md pb-2 pl-4 pr-4 pt-2">
+                Sign Up
+              </button>
+            </Link>
+          </>
+        )}
       </div>
-      <div>
+      <div className="flex items-center gap-4">
         {session ? (
-          <SignOutButton />
+          <>
+            <span className="text-lg font-semibold">
+              hai, {session.user?.name || "User"}
+            </span>
+            <SignOutButton />
+          </>
         ) : (
           <Link
             href={
