@@ -13,7 +13,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
   const pathname = usePathname();
   const [modalOpen, setModalOpen] = useState(false);
   return (
-    <div className="z-10 flex h-14 w-full items-center justify-between border-b-2 border-black bg-sageGreen pb-2 pl-10 pr-10 pt-2 text-black">
+    <div className="z-10 flex h-14 w-full items-center justify-between border-b-2 border-black bg-[#798777] pb-2 pl-10 pr-10 pt-2 text-white">
       <div className="z-10 flex items-center gap-3">
         <Image
           src={chad}
@@ -39,7 +39,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
         ) : (
           <Link href={pathname != "/Pages/signIn" ? "/Pages/signIn" : ""}>
             <button
-              className="rounded-md bg-green-600 pb-1 pl-3 pr-3 pt-1 text-white"
+              className="rounded-md border-2 border-[#F8EDE3] pb-1 pl-3 pr-3 pt-1 text-white hover:bg-[#F8EDE3] hover:text-black"
               data-modal-target={`${pathname == "/Pages/signIn" ? "popup-modal" : ""}`}
               data-modal-toggle={`${pathname == "/Pages/signIn" ? "popup-modal" : ""}`}
               type="button"

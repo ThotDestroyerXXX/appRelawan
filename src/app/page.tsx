@@ -25,7 +25,7 @@ export default function Home() {
             <div className="flex flex-col items-center gap-3">
               <h1 className="text-5xl font-bold">ImpactHub</h1>
               <h2 className="text-xl">Tempat semua orang saling terhubung</h2>
-              <button className="h-10 w-36 rounded-md bg-sageGreen text-base font-semibold text-black">
+              <button className="h-10 w-36 rounded-md bg-[#A2B29F] text-base font-medium text-black hover:bg-[#798777] hover:text-white">
                 Cari Aktivitas
               </button>
             </div>
@@ -40,7 +40,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <section className="items-center bg-white text-center">
+        <section className="items-center bg-[#F8EDE3] text-center">
           <div className="pb-10 pt-36">
             <h1 className="text-center text-4xl font-bold">
               Layanan ImpactHub
@@ -53,7 +53,7 @@ export default function Home() {
               deskripsi={[
                 "Jadilah relawan dan berkontribusi dalam berbagai kegiatan sosial yang bermanfaat bagi masyarakat. Dengan menjadi relawan, Anda dapat membantu orang-orang yang membutuhkan, memperluas jaringan sosial, dan mengembangkan keterampilan baru.",
                 "Cari relawan yang sesuai dengan kebutuhan organisasi Anda. Dengan mencari relawan di ImpactHub, Anda dapat menemukan relawan yang memiliki minat dan keterampilan yang sesuai dengan kebutuhan organisasi Anda.",
-                "ImpactHub adalah platform yang mempertemukan relawan dengan organisasi yang membutuhkan relawan. Dengan ImpactHub, Anda dapat mencari relawan, mencari organisasi, dan menemukan berbagai kegiatan sosial yang bermanfaat bagi masyarakat.",
+                "ImpactHub adalah platform yang mempertemukan relawan dengan organisasi yang membutuhkan relawan. Cari tahu lebih dalam tentang kami dan bagaimana kami dapat membantu Anda dalam mencari relawan atau menjadi relawan.",
               ]}
               link={["/Pages/signUp", "/Pages/signUpOrg", "/Pages/aboutUs"]}
               placeholder={["Jadi Relawan", "Jadi Organisasi", "Tentang Kami"]}

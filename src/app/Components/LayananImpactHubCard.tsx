@@ -19,7 +19,7 @@ export default function LayananImpactHubCard({
 }: LayananImpactHubCardProps) {
   return judul.map((judul, index) => (
     <div
-      className="flex h-[35rem] w-[25rem] flex-col items-center gap-3 rounded-lg bg-green-500 text-white shadow-lg"
+      className="flex h-[35rem] w-[25rem] flex-col items-center gap-3 rounded-lg bg-white text-black shadow-lg"
       key={judul}
     >
       <Image
@@ -31,11 +31,13 @@ export default function LayananImpactHubCard({
         <h2 className="text-center text-2xl font-bold">{judul}</h2>
         <p>{deskripsi[index]}</p>
       </div>
-      <Link href={link[index] ?? ""}>
-        <button className="h-10 w-44 items-center rounded-md bg-white text-center text-black">
-          {placeholder[index]}
-        </button>
-      </Link>
+      <div className="mb-7 mt-auto">
+        <Link href={link[index] ?? ""}>
+          <button className="h-10 w-44 items-center rounded-md border-2 border-[#BDD2B6] text-center text-black hover:bg-[#BDD2B6]">
+            {placeholder[index]}
+          </button>
+        </Link>
+      </div>
     </div>
   ));
 }
