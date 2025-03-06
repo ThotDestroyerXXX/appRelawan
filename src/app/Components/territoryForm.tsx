@@ -22,6 +22,7 @@ interface TerritoryFormProps {
   selectedRegency: TerritoryProps | null;
   selectedSubDistrict: TerritoryProps | null;
   selectedWard: TerritoryProps | null;
+  disabled: boolean;
 }
 
 const TerritoryForm: React.FC<TerritoryFormProps> = ({
@@ -33,6 +34,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
   selectedRegency,
   selectedSubDistrict,
   selectedWard,
+  disabled,
 }) => {
   const [province, setProvince] = useState<Province[]>();
   const [regency, setRegency] = useState<Regency[]>();
@@ -109,6 +111,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
           classNames={customStyles}
           name="province-select"
           value={selectedProvince}
+          isDisabled={disabled}
         />
       </div>
       <div>
@@ -128,7 +131,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
           onChange={(option) =>
             setSelectedRegency(option ?? { value: "", label: "" })
           }
-          isDisabled={!selectedProvince}
+          isDisabled={!selectedProvince || disabled}
           classNames={customStyles}
           name="regency-select"
           value={selectedRegency}
@@ -151,7 +154,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
           onChange={(option) =>
             setSelectedSubDistrict(option ?? { value: "", label: "" })
           }
-          isDisabled={!selectedRegency}
+          isDisabled={!selectedRegency || disabled}
           classNames={customStyles}
           name="subdistrict-select"
           value={selectedSubDistrict}
@@ -174,7 +177,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
           onChange={(option) =>
             setSelectedWard(option ?? { value: "", label: "" })
           }
-          isDisabled={!selectedSubDistrict}
+          isDisabled={!selectedSubDistrict || disabled}
           classNames={customStyles}
           name="ward-select"
           value={selectedWard}
