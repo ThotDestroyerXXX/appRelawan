@@ -82,6 +82,7 @@ const SignUpOrg = () => {
             selectedRegency={selectedRegency}
             selectedSubDistrict={selectedSubDistrict}
             selectedWard={selectedWard}
+            disabled={isPending}
           />
           <div className="flex w-screen max-w-sm flex-col">
             <label
