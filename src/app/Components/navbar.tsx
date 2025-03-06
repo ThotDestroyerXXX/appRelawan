@@ -13,20 +13,22 @@ const Navbar = ({ session }: { session: Session | null }) => {
   const pathname = usePathname();
   const [modalOpen, setModalOpen] = useState(false);
   return (
-    <div className="flex h-16 w-full items-center justify-between border-b-2 border-black bg-sageGreen pb-2 pl-10 pr-10 pt-2 text-black">
-      <div className="flex items-center gap-3">
+    <div className="z-10 flex h-14 w-full items-center justify-between border-b-2 border-black bg-sageGreen pb-2 pl-10 pr-10 pt-2 text-black">
+      <div className="z-10 flex items-center gap-3">
         <Image
           src={chad}
           alt="chad"
           className="h-11 w-11 rounded-full object-cover"
         />
       </div>
-      <div className="flex gap-6">
+      <div className="z-10 flex gap-6">
         <Link href="/">
-          <button className="rounded-md pb-2 pl-4 pr-4 pt-2">Home</button>
+          <button className="rounded-md pb-2 pl-4 pr-4 pt-2 text-xl font-bold">
+            ImpactHub
+          </button>
         </Link>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="z-10 flex items-center gap-4">
         {session ? (
           <>
             <span className="text-lg font-semibold">
@@ -37,7 +39,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
         ) : (
           <Link href={pathname != "/Pages/signIn" ? "/Pages/signIn" : ""}>
             <button
-              className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white"
+              className="rounded-md bg-green-600 pb-1 pl-3 pr-3 pt-1 text-white"
               data-modal-target={`${pathname == "/Pages/signIn" ? "popup-modal" : ""}`}
               data-modal-toggle={`${pathname == "/Pages/signIn" ? "popup-modal" : ""}`}
               type="button"
