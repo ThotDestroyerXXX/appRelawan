@@ -8,21 +8,36 @@ import {
 } from "territory-indonesia";
 import Select from "react-select";
 
-interface TerritoryProps {
+export interface TerritoryProps {
   value: string;
   label: string;
 }
 
-const TerritoryForm = () => {
+interface TerritoryFormProps {
+  setSelectedProvince: (option: TerritoryProps | null) => void;
+  setSelectedRegency: (option: TerritoryProps | null) => void;
+  setSelectedSubDistrict: (option: TerritoryProps | null) => void;
+  setSelectedWard: (option: TerritoryProps | null) => void;
+  selectedProvince: TerritoryProps | null;
+  selectedRegency: TerritoryProps | null;
+  selectedSubDistrict: TerritoryProps | null;
+  selectedWard: TerritoryProps | null;
+}
+
+const TerritoryForm: React.FC<TerritoryFormProps> = ({
+  setSelectedProvince,
+  setSelectedRegency,
+  setSelectedSubDistrict,
+  setSelectedWard,
+  selectedProvince,
+  selectedRegency,
+  selectedSubDistrict,
+  selectedWard,
+}) => {
   const [province, setProvince] = useState<Province[]>();
   const [regency, setRegency] = useState<Regency[]>();
   const [subDistrict, setSubDistrict] = useState<District[]>();
   const [ward, setWard] = useState<Village[]>();
-  const [selectedProvince, setSelectedProvince] = useState<TerritoryProps>();
-  const [selectedRegency, setSelectedRegency] = useState<TerritoryProps>();
-  const [selectedSubDistrict, setSelectedSubDistrict] =
-    useState<TerritoryProps>();
-  const [selectedWard, setSelectedWard] = useState<TerritoryProps>();
   useEffect(() => {
     const getTerritoryData = async () => {
       await indonesia.getAllProvinces().then((data) => {
@@ -85,6 +100,8 @@ const TerritoryForm = () => {
           inputId="province-select"
           id="province-select"
           options={provinceOptions}
+          getOptionLabel={(option) => option.label}
+          getOptionValue={(option) => option.value}
           placeholder="Masukkan Provinsi"
           onChange={(option) =>
             setSelectedProvince(option ?? { value: "", label: "" })
@@ -105,6 +122,8 @@ const TerritoryForm = () => {
           inputId="regency-select"
           id="regency-select"
           options={regencyOptions}
+          getOptionLabel={(option) => option.label}
+          getOptionValue={(option) => option.value}
           placeholder="Masukkan Kabupaten"
           onChange={(option) =>
             setSelectedRegency(option ?? { value: "", label: "" })
@@ -126,6 +145,8 @@ const TerritoryForm = () => {
           inputId="subdistrict-select"
           id="subdistrict-select"
           options={subDistrictOptions}
+          getOptionLabel={(option) => option.label}
+          getOptionValue={(option) => option.value}
           placeholder="Masukkan Kecamatan"
           onChange={(option) =>
             setSelectedSubDistrict(option ?? { value: "", label: "" })
@@ -147,6 +168,8 @@ const TerritoryForm = () => {
           inputId="ward-select"
           id="ward-select"
           options={wardOptions}
+          getOptionLabel={(option) => option.label}
+          getOptionValue={(option) => option.value}
           placeholder="Masukkan Kelurahan"
           onChange={(option) =>
             setSelectedWard(option ?? { value: "", label: "" })

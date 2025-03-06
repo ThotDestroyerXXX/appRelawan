@@ -17,7 +17,9 @@ const SignUp = () => {
         />
         <h2 className="text-3xl font-bold">Sign Up for Free</h2>
         <form
-          onSubmit={() => handleSubmit}
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+            handleSubmit(false, e)
+          }
           className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
         >
           <SignForm
