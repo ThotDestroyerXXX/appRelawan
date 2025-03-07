@@ -1,7 +1,7 @@
 import { type IconType } from "react-icons/lib";
 
 interface LandingPageGoodThingProps {
-  jumlah: number[];
+  jumlah: (number | React.JSX.Element)[];
   jenis: string[];
   icon: IconType[];
 }
@@ -10,7 +10,7 @@ export default function LandingPageGoodThing({
   jumlah,
   jenis,
   icon,
-}: LandingPageGoodThingProps) {
+}: Readonly<LandingPageGoodThingProps>) {
   return jumlah.map((jml, index) => (
     <div className="flex flex-row items-center gap-3" key={jenis[index]}>
       {icon[index]?.({ className: "h-20 w-20" })}
