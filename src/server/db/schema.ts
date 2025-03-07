@@ -170,10 +170,10 @@ export const activity = createTable("activity", {
   activity_status_id: integer("activity_status_id")
     .notNull()
     .references(() => activityStatus.id),
-  activity_category_id_1: integer("activity_category_id")
+  activity_category_id_1: integer("activity_category_id_1")
     .notNull()
     .references(() => activityCategory.id),
-  activity_category_id_2: integer("activity_category_id")
+  activity_category_id_2: integer("activity_category_id_2")
     .notNull()
     .references(() => activityCategory.id),
   organization_id: uuid("organization_id")

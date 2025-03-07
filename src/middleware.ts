@@ -17,6 +17,8 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname === "/Pages/Dashboard")
   ) {
     return NextResponse.redirect(new URL("/Pages/signIn", request.url));
+  } else if (request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/Pages/Home", request.url));
   }
 }
 
