@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { organization } from "~/server/db/schema";
 import { TRPCClientError } from "@trpc/client";
+import { sql } from "drizzle-orm";
 
 export const organizationRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -69,4 +70,13 @@ export const organizationRouter = createTRPCRouter({
         .returning({ id: organization.id })
         .execute();
     }),
+  getAllOrganization: publicProcedure.query(async ({ ctx }) => {
+    const result = await ctx.db
+      .select({ count: sql<number>`COUNT(*)` })
+      .from(organization)
+      .execute();
+
+    const organizationCount = result[0]?.count ?? 0;
+    return organizationCount;
+  }),
 });

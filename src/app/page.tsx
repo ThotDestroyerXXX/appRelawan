@@ -32,7 +32,7 @@ export default function Home() {
             <div className="flex flex-col items-center gap-6">
               <div className="flex h-40 w-[60vw] flex-row items-center justify-around rounded-md bg-white pl-4 pr-4 text-black shadow-lg">
                 <LandingPageGoodThing
-                  jumlah={[20000, 4000, 11275]}
+                  jumlah={[20000, 0, 11275]}
                   jenis={["Relawan", "Organisasi", "Aktivitas"]}
                   icon={[IoMdPeople, VscOrganization, MdVolunteerActivism]}
                 />
