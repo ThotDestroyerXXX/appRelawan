@@ -6,38 +6,29 @@ import Link from "next/link";
 import { type Session } from "~/lib/auth";
 import SignOutButton from "./signOutButton";
 import { usePathname } from "next/navigation";
+import AlertModal from "./signUpType";
+import { useState } from "react";
 
 const Navbar = ({ session }: { session: Session | null }) => {
   const pathname = usePathname();
+  const [modalOpen, setModalOpen] = useState(false);
   return (
-    <div className="flex h-16 w-full items-center justify-between border-b-2 border-black bg-sageGreen pb-2 pl-10 pr-10 pt-2 text-black">
-      <div className="flex items-center gap-3">
+    <div className="z-10 flex h-14 w-full items-center justify-between border-b-2 border-black bg-[#798777] pb-2 pl-10 pr-10 pt-2 text-white">
+      <div className="z-10 flex items-center gap-3">
         <Image
           src={chad}
           alt="chad"
           className="h-11 w-11 rounded-full object-cover"
         />
       </div>
-      <div className="flex gap-6">
+      <div className="z-10 flex gap-6">
         <Link href="/">
-          <button className="rounded-md pb-2 pl-4 pr-4 pt-2">Home</button>
+          <button className="rounded-md pb-2 pl-4 pr-4 pt-2 text-xl font-bold">
+            ImpactHub
+          </button>
         </Link>
-        {!session && (
-          <>
-            <Link href="/Pages/signIn">
-              <button className="rounded-md pb-2 pl-4 pr-4 pt-2">
-                Sign In
-              </button>
-            </Link>
-            <Link href="/Pages/signUp">
-              <button className="rounded-md pb-2 pl-4 pr-4 pt-2">
-                Sign Up
-              </button>
-            </Link>
-          </>
-        )}
       </div>
-      <div className="flex items-center gap-4">
+      <div className="z-10 flex items-center gap-4">
         {session ? (
           <>
             <span className="text-lg font-semibold">
@@ -47,16 +38,27 @@ const Navbar = ({ session }: { session: Session | null }) => {
           </>
         ) : (
           <Link
-            href={
-              pathname == "/Pages/signIn" ? "/Pages/signUp" : "/Pages/signIn"
-            }
+            href={pathname != "/Pages/Auth/signIn" ? "/Pages/Auth/signIn" : ""}
           >
-            <button className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white">
-              {pathname == "/Pages/signIn" ? "Sign Up" : "Sign In"}
+            <button
+              className="rounded-md border-2 border-[#F8EDE3] pb-1 pl-3 pr-3 pt-1 text-white hover:bg-[#F8EDE3] hover:text-black"
+              data-modal-target={`${pathname == "/Pages/Auth/signIn" ? "popup-modal" : ""}`}
+              data-modal-toggle={`${pathname == "/Pages/Auth/signIn" ? "popup-modal" : ""}`}
+              type="button"
+              onClick={() => {
+                if (pathname == "/Pages/Auth/signIn") {
+                  setModalOpen(true);
+                } else {
+                  setModalOpen(false);
+                }
+              }}
+            >
+              {pathname == "/Pages/Auth/signIn" ? "Sign Up" : "Sign In"}
             </button>
           </Link>
         )}
       </div>
+      <AlertModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };

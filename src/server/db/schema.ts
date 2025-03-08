@@ -30,6 +30,7 @@ export const user = createTable("user", {
   image: text("image"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
+  organization_id: uuid("organization_id").references(() => organization.id),
 });
 
 export const session = createTable("session", {
@@ -111,7 +112,22 @@ export const followOrganization = createTable("followOrganization", {
     .references(() => organization.id),
 });
 
+export const organizationRatingReview = createTable(
+  "organizationRatingReview",
+  {
+    user_id: text("user_id")
+      .notNull()
+      .references(() => user.id),
+    organization_id: uuid("organization_id")
+      .notNull()
+      .references(() => organization.id),
+    rating: integer("rating").notNull(),
+    review: text("review").notNull(),
+  },
+);
+
 export const userActivity = createTable("userActivity", {
+  id: uuid("id").primaryKey(),
   user_id: text("user_id")
     .notNull()
     .references(() => user.id),
@@ -121,6 +137,16 @@ export const userActivity = createTable("userActivity", {
   user_activity_status_id: integer("user_activity_status_id")
     .notNull()
     .references(() => userActivityStatus.id),
+});
+
+export const userActivityApply = createTable("userActivityApply", {
+  user_activity_id: uuid("user_activity_id")
+    .references(() => userActivity.id)
+    .notNull(),
+  question_1: text("question_1").notNull(),
+  question_2: text("question_2").notNull(),
+  current_job: text("current_job").notNull(),
+  phone_number: varchar("phone_number", { length: 20 }).notNull(),
 });
 
 export const userActivityStatus = createTable("userActivityStatus", {
@@ -140,13 +166,14 @@ export const activity = createTable("activity", {
   address: text("address").notNull(),
   registration_deadline_date: date("registration_deadline_date").notNull(),
   thumbnail_url: text("thumbnail_url"),
+  activity_person_limit: integer("activity_person_limit").notNull(),
   activity_status_id: integer("activity_status_id")
     .notNull()
     .references(() => activityStatus.id),
-  activity_category_id_1: integer("activity_category_id")
+  activity_category_id_1: integer("activity_category_id_1")
     .notNull()
     .references(() => activityCategory.id),
-  activity_category_id_2: integer("activity_category_id")
+  activity_category_id_2: integer("activity_category_id_2")
     .notNull()
     .references(() => activityCategory.id),
   organization_id: uuid("organization_id")
@@ -155,6 +182,9 @@ export const activity = createTable("activity", {
   location_type_id: integer("location_type_id")
     .notNull()
     .references(() => locationType.id),
+  activity_type_id: integer("activity_type_id")
+    .notNull()
+    .references(() => activityType.id),
 });
 
 export const activityTimeDetail = createTable("activityTimeDetail", {
@@ -188,4 +218,20 @@ export const activityGallery = createTable("activityGallery", {
   activity_detail_id: uuid("activity_detail_id")
     .notNull()
     .references(() => activityDetail.id),
+});
+
+export const activityRatingReview = createTable("activityRatingReview", {
+  user_id: text("user_id")
+    .notNull()
+    .references(() => user.id),
+  activity_id: uuid("activity_id")
+    .notNull()
+    .references(() => activity.id),
+  rating: integer("rating").notNull(),
+  review: text("review").notNull(),
+});
+
+export const activityType = createTable("activityType", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  name: varchar("name", { length: 50 }).notNull().unique(),
 });
