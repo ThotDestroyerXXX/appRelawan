@@ -13,6 +13,7 @@ import {
   fetchOrganizationCount,
   fetchUserCount,
   fetchActivityCount,
+  fetchUserById,
 } from "~/app/api/HomePage/getList";
 import Spinner from "~/app/Components/Spinner";
 
@@ -20,6 +21,7 @@ export default function Home() {
   const organizationCount = fetchOrganizationCount().data;
   const userCount = fetchUserCount().data;
   const activityCount = fetchActivityCount().data;
+  const { data: user } = fetchUserById("0hghw5Tkv8EStS9YWhxLgXasZgLIbGBC");
   return (
     <main className="h-full w-screen">
       <div className="relative h-[50vh] w-screen">
@@ -54,6 +56,7 @@ export default function Home() {
       <section className="items-center bg-[#F8EDE3] text-center">
         <div className="pb-10 pt-36">
           <h1 className="text-center text-4xl font-bold">Layanan ImpactHub</h1>
+          {user?.name}
         </div>
         <div className="flex flex-row flex-wrap items-center justify-center gap-10 pl-10 pr-10">
           <LayananImpactHubCard

@@ -14,11 +14,12 @@ export const userRouter = createTRPCRouter({
     return userCount;
   }),
 
-    getUserById: publicProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
-        const existUser = await ctx.db.query.user.findFirst({
-            where: (users, { eq }) => eq(users.id, input.id),
-        });
-        return existUser;
-    })
-
+  getUserById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const existUser = await ctx.db.query.user.findFirst({
+        where: (users, { eq }) => eq(users.id, input.id),
+      });
+      return existUser;
+    }),
 });
