@@ -14,3 +14,8 @@ export function fetchActivityCount() {
   const result = api.activity.getActivityCount.useQuery();
   return result;
 }
+
+export function fetchUserById() {
+    const result = api.user.getUserById.useQuery();
+    return result;
+}
