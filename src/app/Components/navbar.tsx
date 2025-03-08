@@ -37,21 +37,23 @@ const Navbar = ({ session }: { session: Session | null }) => {
             <SignOutButton />
           </>
         ) : (
-          <Link href={pathname != "/Pages/signIn" ? "/Pages/signIn" : ""}>
+          <Link
+            href={pathname != "/Pages/Auth/signIn" ? "/Pages/Auth/signIn" : ""}
+          >
             <button
               className="rounded-md border-2 border-[#F8EDE3] pb-1 pl-3 pr-3 pt-1 text-white hover:bg-[#F8EDE3] hover:text-black"
-              data-modal-target={`${pathname == "/Pages/signIn" ? "popup-modal" : ""}`}
-              data-modal-toggle={`${pathname == "/Pages/signIn" ? "popup-modal" : ""}`}
+              data-modal-target={`${pathname == "/Pages/Auth/signIn" ? "popup-modal" : ""}`}
+              data-modal-toggle={`${pathname == "/Pages/Auth/signIn" ? "popup-modal" : ""}`}
               type="button"
               onClick={() => {
-                if (pathname == "/Pages/signIn") {
+                if (pathname == "/Pages/Auth/signIn") {
                   setModalOpen(true);
                 } else {
                   setModalOpen(false);
                 }
               }}
             >
-              {pathname == "/Pages/signIn" ? "Sign Up" : "Sign In"}
+              {pathname == "/Pages/Auth/signIn" ? "Sign Up" : "Sign In"}
             </button>
           </Link>
         )}
