@@ -55,7 +55,11 @@ export default function Home() {
                 "Cari relawan yang sesuai dengan kebutuhan organisasi Anda. Dengan mencari relawan di ImpactHub, Anda dapat menemukan relawan yang memiliki minat dan keterampilan yang sesuai dengan kebutuhan organisasi Anda.",
                 "ImpactHub adalah platform yang mempertemukan relawan dengan organisasi yang membutuhkan relawan. Cari tahu lebih dalam tentang kami dan bagaimana kami dapat membantu Anda dalam mencari relawan atau menjadi relawan.",
               ]}
-              link={["/Pages/signUp", "/Pages/signUpOrg", "/Pages/aboutUs"]}
+              link={[
+                "/Pages/Auth/signUp",
+                "/Pages/Auth/signUpOrg",
+                "/Pages/aboutUs",
+              ]}
               placeholder={["Jadi Relawan", "Jadi Organisasi", "Tentang Kami"]}
             />
           </div>
