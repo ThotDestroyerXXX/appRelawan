@@ -4,20 +4,18 @@ import { getSessionCookie } from "better-auth";
 export async function middleware(request: NextRequest) {
   const session = getSessionCookie(request);
 
-  if (
-    session &&
-    (request.nextUrl.pathname === "/Pages/signIn" ||
-      request.nextUrl.pathname === "/Pages/signUp" ||
-      request.nextUrl.pathname === "/Pages/signUpOrg")
-  ) {
+  if (session && request.nextUrl.pathname.startsWith("/Pages/Auth/")) {
     return NextResponse.redirect(new URL("/", request.url));
   } else if (
     !session &&
-    (request.nextUrl.pathname === "/Pages/UserProfile" ||
-      request.nextUrl.pathname === "/Pages/Dashboard")
+    (request.nextUrl.pathname.startsWith("/Pages/User/") ||
+      request.nextUrl.pathname.startsWith("/Pages/Organization/"))
   ) {
     return NextResponse.redirect(new URL("/Pages/signIn", request.url));
-  } else if (request.nextUrl.pathname === "/") {
+  } else if (
+    request.nextUrl.pathname === "/" ||
+    request.nextUrl.pathname === "/Pages/BE_Testing"
+  ) {
     return NextResponse.redirect(new URL("/Pages/Home", request.url));
   }
 }

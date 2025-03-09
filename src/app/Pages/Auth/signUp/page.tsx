@@ -3,7 +3,7 @@
 import SignForm from "~/app/Components/signForm";
 import Image from "next/image";
 import chad from "~/app/Assets/chad.jpg";
-import { useSignUp } from "../../api/SignUp/SignUp";
+import { useSignUp } from "../../../api/SignUp/SignUp";
 
 const SignUp = () => {
   const { handleSubmit, isPending, errors } = useSignUp();
