@@ -14,12 +14,20 @@ export const userRouter = createTRPCRouter({
     return userCount;
   }),
 
-  getUserById: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const existUser = await ctx.db.query.user.findFirst({
-        where: (users, { eq }) => eq(users.id, input.id),
-      });
-      return existUser;
+    updateUser: publicProcedure.input(z.object({ id: z.string(), newName: z.string() })).mutation(async ({ ctx, input }) => {
+        const existUser = await ctx.db.query.user.findFirst({
+            where: (users, { eq }) => eq(users.id, input.id),
+        });
+
+        if (existUser == null) {
+            throw new Error("User Invalid");
+        } else {
+            await ctx.db
+                .update(user)
+                .set({ name: input.newName })
+                .where(eq(user.id, input.id));
+        }
+
+        return 0; // atau kembalikan pesan sukses
     }),
 });
