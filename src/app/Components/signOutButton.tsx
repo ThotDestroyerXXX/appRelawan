@@ -12,7 +12,7 @@ const SignOutButton = () => {
       await authClient.signOut({
         fetchOptions: {
           onSuccess: () => {
-            router.push("/Pages/signIn");
+            router.push("/Pages/Auth/signIn");
             router.refresh();
           },
         },
