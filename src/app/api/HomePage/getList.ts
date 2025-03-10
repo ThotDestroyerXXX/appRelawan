@@ -14,3 +14,4 @@ export function fetchActivityCount() {
   const result = api.activity.getActivityCount.useQuery();
   return result;
 }
+
