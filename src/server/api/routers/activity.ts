@@ -1,10 +1,10 @@
-import { sql } from "drizzle-orm";
+import { count } from "drizzle-orm";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { activity } from "~/server/db/schema";
 export const activityRouter = createTRPCRouter({
   getActivityCount: publicProcedure.query(async ({ ctx }) => {
     const result = await ctx.db
-      .select({ count: sql<number>`COUNT(*)` })
+      .select({ count: count(activity.id) })
       .from(activity)
       .execute();
 
