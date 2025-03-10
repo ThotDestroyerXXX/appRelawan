@@ -12,10 +12,7 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname.startsWith("/Pages/Organization/"))
   ) {
     return NextResponse.redirect(new URL("/Pages/Auth/signIn", request.url));
-  } else if (
-    request.nextUrl.pathname === "/" ||
-    request.nextUrl.pathname === "/Pages/BE_Testing"
-  ) {
+  } else if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/Pages/Home", request.url));
   }
 }

@@ -1,8 +1,13 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { organization } from "~/server/db/schema";
+import {
+  activity,
+  followOrganization,
+  organization,
+  organizationRatingReview,
+} from "~/server/db/schema";
 import { TRPCClientError } from "@trpc/client";
-import { sql } from "drizzle-orm";
+import { avg, count, eq } from "drizzle-orm";
 
 export const organizationRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -72,11 +77,80 @@ export const organizationRouter = createTRPCRouter({
     }),
   getAllOrganization: publicProcedure.query(async ({ ctx }) => {
     const result = await ctx.db
-      .select({ count: sql<number>`COUNT(*)` })
+      .select({ count: count(organization.id) })
       .from(organization)
+      .where(eq(organization.is_active, true))
       .execute();
 
     const organizationCount = result[0]?.count ?? 0;
     return organizationCount;
   }),
+
+  getOrganizationDetail: publicProcedure.query(async ({ ctx }) => {
+    const result = await ctx.db
+      .select({
+        id: organization.id,
+        name: organization.name,
+        description: organization.description,
+        phone_number: organization.phone_number,
+        province: organization.province,
+        city: organization.city,
+        subdistrict: organization.subdistrict,
+        ward: organization.ward,
+        address: organization.address,
+        postal_code: organization.postal_code,
+        logo_url: organization.logo_url,
+        website_url: organization.website_url,
+        establishment_date: organization.establishment_date,
+        totalFollower: count(followOrganization.organization_id),
+        totalActivity: count(activity.id),
+        organizationRating: avg(organizationRatingReview.rating),
+      })
+      .from(organization)
+      .innerJoin(activity, eq(organization.id, activity.organization_id))
+      .innerJoin(
+        followOrganization,
+        eq(organization.id, followOrganization.organization_id),
+      )
+      .innerJoin(
+        organizationRatingReview,
+        eq(organization.id, organizationRatingReview.organization_id),
+      );
+    return result;
+  }),
+
+  getFollowedOrganization: publicProcedure
+    .input(z.object({ user_id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      return await ctx.db
+        .select({
+          id: organization.id,
+          name: organization.name,
+          province: organization.province,
+          city: organization.city,
+          logo_url: organization.logo_url,
+          totalFollower: count(followOrganization.organization_id),
+          totalActivity: count(activity.id),
+          organizationRating: avg(organizationRatingReview.rating),
+        })
+        .from(followOrganization)
+        .innerJoin(
+          organization,
+          eq(followOrganization.organization_id, organization.id),
+        )
+        .innerJoin(activity, eq(organization.id, activity.organization_id))
+        .innerJoin(
+          organizationRatingReview,
+          eq(organization.id, organizationRatingReview.organization_id),
+        )
+        .where(eq(followOrganization.user_id, input.user_id))
+        .groupBy(
+          organization.id,
+          organization.name,
+          organization.province,
+          organization.city,
+          organization.logo_url,
+        )
+        .execute();
+    }),
 });
