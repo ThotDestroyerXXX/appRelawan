@@ -5,10 +5,10 @@ import { HydrateClient } from "~/trpc/server";
 import { IoMdPeople } from "react-icons/io";
 import { VscOrganization } from "react-icons/vsc";
 import { MdVolunteerActivism } from "react-icons/md";
-import LandingPageGoodThing from "./_Components/LandingPageGoodThing";
+import LandingPageGoodThing from "./Components/LandingPageGoodThing";
 import volunteerImage from "~/app/Assets/becomeVolunteerImage.jpeg";
 import organisasiImage from "~/app/Assets/organisasiImage.png";
-import LayananImpactHubCard from "./_Components/LayananImpactHubCard";
+import LayananImpactHubCard from "./Components/LayananImpactHubCard";
 import aboutUsImage from "~/app/Assets/aboutUsImage.png";
 
 export default function Home() {

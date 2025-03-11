@@ -3,9 +3,9 @@ import Image from "next/image";
 import { useState } from "react";
 import { useSignUp } from "~/app/api/SignUp/SignUp";
 import chad from "~/app/Assets/chad.jpg";
-import SignForm from "~/app/_Components/signForm";
-import TerritoryForm from "~/app/_Components/territoryForm";
-import { type TerritoryProps } from "~/app/_Components/territoryForm";
+import SignForm from "~/app/Components/signForm";
+import TerritoryForm from "~/app/Components/territoryForm";
+import { type TerritoryProps } from "~/app/Components/territoryForm";
 
 const SignUpOrg = () => {
   const { handleSubmit, isPending, errors } = useSignUp();

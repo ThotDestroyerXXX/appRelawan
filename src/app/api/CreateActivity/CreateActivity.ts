@@ -1,4 +1,4 @@
-import { type TypeProps } from "~/app/_Components/ActivityCategoryAndType";
+import { type TypeProps } from "~/app/Components/ActivityCategoryAndType";
 import { api } from "~/trpc/react";
 
 export const days: TypeProps[] = [

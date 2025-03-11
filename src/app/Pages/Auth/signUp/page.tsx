@@ -1,6 +1,6 @@
 "use client";
 
-import SignForm from "~/app/_Components/signForm";
+import SignForm from "~/app/Components/signForm";
 import Image from "next/image";
 import chad from "~/app/Assets/chad.jpg";
 import { useSignUp } from "../../../api/SignUp/SignUp";

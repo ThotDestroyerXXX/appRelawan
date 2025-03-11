@@ -3,12 +3,12 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ActivityCategoryAndType, {
   type TypeProps,
-} from "~/app/_Components/ActivityCategoryAndType";
-import DayTimeForm from "~/app/_Components/DayTimeForm";
-import SignForm from "~/app/_Components/signForm";
+} from "~/app/Components/ActivityCategoryAndType";
+import DayTimeForm from "~/app/Components/DayTimeForm";
+import SignForm from "~/app/Components/signForm";
 import TerritoryForm, {
   type TerritoryProps,
-} from "~/app/_Components/territoryForm";
+} from "~/app/Components/territoryForm";
 
 export default function CreateActivity() {
   const [timeFields, setTimeFields] = useState<{ id: string; value: string }[]>(
