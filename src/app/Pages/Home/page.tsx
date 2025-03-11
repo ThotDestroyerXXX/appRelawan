@@ -4,17 +4,17 @@ import volunteer from "~/app/Assets/volunteer_home_page_photo.jpg";
 import { IoMdPeople } from "react-icons/io";
 import { VscOrganization } from "react-icons/vsc";
 import { MdVolunteerActivism } from "react-icons/md";
-import LandingPageGoodThing from "../../Components/LandingPageGoodThing";
+import LandingPageGoodThing from "../../_Components/LandingPageGoodThing";
 import volunteerImage from "~/app/Assets/becomeVolunteerImage.jpeg";
 import organisasiImage from "~/app/Assets/organisasiImage.png";
-import LayananImpactHubCard from "../../Components/LayananImpactHubCard";
+import LayananImpactHubCard from "../../_Components/LayananImpactHubCard";
 import aboutUsImage from "~/app/Assets/aboutUsImage.png";
 import {
   fetchOrganizationCount,
   fetchUserCount,
   fetchActivityCount,
 } from "~/app/api/HomePage/getList";
-import Spinner from "~/app/Components/Spinner";
+import Spinner from "~/app/_Components/Spinner";
 
 export default function Home() {
   const organizationCount = fetchOrganizationCount().data;

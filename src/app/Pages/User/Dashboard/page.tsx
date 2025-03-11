@@ -3,8 +3,8 @@ import {
   fetchProsesSeleksi,
   fetchFollowedOrganization,
 } from "~/app/api/Dashboard/Dashboard";
-import EmptyMessage from "~/app/Components/EmptyMessage";
-import Spinner from "~/app/Components/Spinner";
+import EmptyMessage from "~/app/_Components/EmptyMessage";
+import Spinner from "~/app/_Components/Spinner";
 import { authClient } from "~/lib/auth-client";
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";

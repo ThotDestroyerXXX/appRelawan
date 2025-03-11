@@ -4,6 +4,7 @@ interface SignFormProps {
   placeholder: string[];
   error?: string | null;
   disabled?: boolean;
+  labelTextSize?: string;
 }
 
 const SignForm: React.FC<SignFormProps> = ({
@@ -12,15 +13,17 @@ const SignForm: React.FC<SignFormProps> = ({
   placeholder,
   error,
   disabled,
+  labelTextSize,
 }) => {
-  label.forEach((lbl) => {
-    console.log(lbl.replaceAll(" ", "").trim().toLowerCase());
-  });
   return (
     <>
       {label.map((lbl, index) => (
-        <div key={lbl} className="w-screen max-w-sm">
-          <label className="mb-2 block text-sm text-gray-700">{lbl}</label>
+        <div key={lbl} className="w-full">
+          <label
+            className={`mb-2 block text-${labelTextSize ?? "sm"} text-gray-700`}
+          >
+            {lbl}
+          </label>
           <input
             type={type[index]}
             placeholder={placeholder[index]}

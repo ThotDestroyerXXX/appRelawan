@@ -1,6 +1,6 @@
 "use client";
 
-import SignForm from "~/app/Components/signForm";
+import SignForm from "~/app/_Components/signForm";
 import Image from "next/image";
 import chad from "~/app/Assets/chad.jpg";
 import { useSignUp } from "../../../api/SignUp/SignUp";
@@ -36,7 +36,7 @@ const SignUp = () => {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
+            className="w-screen max-w-sm rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
           >
             Submit
           </button>
