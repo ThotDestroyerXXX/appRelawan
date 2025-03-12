@@ -83,6 +83,7 @@ const SignUpOrg = () => {
             selectedSubDistrict={selectedSubDistrict}
             selectedWard={selectedWard}
             disabled={isPending}
+            labelPlaceholder="Organisasi"
           />
           <div className="flex w-screen max-w-sm flex-col">
             <label

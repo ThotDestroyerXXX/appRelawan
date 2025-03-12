@@ -1,29 +1,23 @@
-interface SignFormProps {
+interface CreateFormProps {
   label: string[];
   type: string[];
   placeholder: string[];
   error?: string | null;
   disabled?: boolean;
-  labelTextSize?: string;
 }
 
-const SignForm: React.FC<SignFormProps> = ({
+const CreateForm: React.FC<CreateFormProps> = ({
   label,
   type,
   placeholder,
   error,
   disabled,
-  labelTextSize,
 }) => {
   return (
     <>
       {label.map((lbl, index) => (
         <div key={lbl} className="w-full">
-          <label
-            className={`mb-2 block text-${labelTextSize ?? "sm"} text-gray-700`}
-          >
-            {lbl}
-          </label>
+          <label className="mb-2 block text-sm text-gray-700">{lbl}</label>
           <input
             type={type[index]}
             placeholder={placeholder[index]}
@@ -40,4 +34,5 @@ const SignForm: React.FC<SignFormProps> = ({
     </>
   );
 };
-export default SignForm;
+
+export default CreateForm;
