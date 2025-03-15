@@ -4,6 +4,9 @@ import {
     activity,
     activityDetail,
     organization,
+    locationType,
+    activityCategory,
+    activityType,
     organizationRatingReview
 } from "~/server/db/schema";
 export const activityRouter = createTRPCRouter({
@@ -15,7 +18,6 @@ export const activityRouter = createTRPCRouter({
 
     return result[0]?.count ?? 0;
   }),
-
     getListActivity: publicProcedure.query(async ({ ctx }) => {
 
         const result = await ctx.db
@@ -43,4 +45,13 @@ export const activityRouter = createTRPCRouter({
 
         return result;
     }),
+  getActivityCategory: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.select().from(activityCategory).execute();
+  }),
+  getLocationType: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.select().from(locationType).execute();
+  }),
+  getActivityType: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.select().from(activityType).execute();
+  }),
 });

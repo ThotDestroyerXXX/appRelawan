@@ -22,7 +22,8 @@ interface TerritoryFormProps {
   selectedRegency: TerritoryProps | null;
   selectedSubDistrict: TerritoryProps | null;
   selectedWard: TerritoryProps | null;
-  disabled: boolean;
+  disabled?: boolean;
+  labelPlaceholder: string;
 }
 
 const TerritoryForm: React.FC<TerritoryFormProps> = ({
@@ -35,6 +36,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
   selectedSubDistrict,
   selectedWard,
   disabled,
+  labelPlaceholder,
 }) => {
   const [province, setProvince] = useState<Province[]>();
   const [regency, setRegency] = useState<Regency[]>();
@@ -87,7 +89,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
     }));
 
   const customStyles = {
-    control: () => "w-screen max-w-sm",
+    control: () => "w-full",
   };
   return (
     <div className="flex flex-col gap-6">
@@ -96,7 +98,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
           htmlFor="province-select"
           className="mb-2 block text-sm text-gray-700"
         >
-          Provinsi Organisasi
+          Provinsi {labelPlaceholder}
         </label>
         <Select
           inputId="province-select"
@@ -119,7 +121,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
           htmlFor="regency-select"
           className="mb-2 block text-sm text-gray-700"
         >
-          Kabupaten Organisasi
+          Kabupaten {labelPlaceholder}
         </label>
         <Select
           inputId="regency-select"
@@ -142,7 +144,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
           htmlFor="subdistrict-select"
           className="mb-2 block text-sm text-gray-700"
         >
-          Kecamatan Organisasi
+          Kecamatan {labelPlaceholder}
         </label>
         <Select
           inputId="subdistrict-select"
@@ -165,7 +167,7 @@ const TerritoryForm: React.FC<TerritoryFormProps> = ({
           htmlFor="ward-select"
           className="mb-2 block text-sm text-gray-700"
         >
-          Kelurahan Organisasi
+          Kelurahan {labelPlaceholder}
         </label>
         <Select
           inputId="ward-select"
