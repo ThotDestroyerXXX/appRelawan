@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { authClient } from "~/lib/auth-client";
 import { useState } from "react";
 
-const SignOutButton = ({ onSignOut }: { onSignOut: () => void }) => {
+const SignOutButton = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const router = useRouter();
   const handleSignOut = async () => {
@@ -17,7 +17,6 @@ const SignOutButton = ({ onSignOut }: { onSignOut: () => void }) => {
           },
         },
       });
-      onSignOut();
     } catch (error) {
       console.error(error);
     } finally {
@@ -25,10 +24,7 @@ const SignOutButton = ({ onSignOut }: { onSignOut: () => void }) => {
     }
   };
   return (
-    <button
-      onClick={handleSignOut}
-      disabled={isPending}
-    >
+    <button onClick={handleSignOut} disabled={isPending}>
       Sign Out
     </button>
   );
