@@ -65,4 +65,5 @@ const Navbar = ({ session }: { session: Session | null }) => {
     </SidebarProvider>
   );
 };
+
 export default Navbar;

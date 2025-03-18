@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { authClient } from "~/lib/auth-client";
 import { useState } from "react";
 
-const SignOutButton = () => {
+const SignOutButton = ({ onSignOut }: { onSignOut: () => void }) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const router = useRouter();
   const handleSignOut = async () => {
@@ -17,6 +17,7 @@ const SignOutButton = () => {
           },
         },
       });
+      onSignOut();
     } catch (error) {
       console.error(error);
     } finally {
@@ -25,11 +26,10 @@ const SignOutButton = () => {
   };
   return (
     <button
-      className="rounded-md bg-green-600 pb-2 pl-4 pr-4 pt-2 text-white"
       onClick={handleSignOut}
       disabled={isPending}
     >
-      sign Out
+      Sign Out
     </button>
   );
 };
