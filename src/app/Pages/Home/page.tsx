@@ -21,13 +21,13 @@ export default function Home() {
   const userCount = fetchUserCount().data;
   const activityCount = fetchActivityCount().data;
   return (
-    <main className="h-full w-screen">
-      <div className="relative h-[50vh] w-screen">
-        <div className="relative left-0 top-0 flex h-[60vh] w-screen flex-col items-center gap-16 pt-16 text-center text-white">
+    <main className="h-full">
+      <div className="relative h-[21rem]">
+        <div className="relative left-0 top-0 flex flex-col items-center gap-[3.5rem] pt-16 text-center text-white">
           <Image
             src={volunteer}
             alt=""
-            className="fixed left-0 top-0 z-[-1] h-[60vh] w-screen object-cover object-top brightness-[0.3]"
+            className="fixed left-0 top-0 z-[-1] h-[25rem] w-screen object-cover object-top brightness-[0.3]"
           />
           <div className="flex flex-col items-center gap-3">
             <h1 className="text-5xl font-bold">ImpactHub</h1>

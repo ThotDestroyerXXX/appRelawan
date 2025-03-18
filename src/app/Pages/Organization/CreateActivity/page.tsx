@@ -47,7 +47,7 @@ export default function CreateActivity() {
           <SignForm
             label={[
               "Nama Aktivitas",
-              "Limit Relawan",
+              "Limit Orang",
               "Tanggal Mulai",
               "Tanggal Selesai",
               "Deadline Registrasi",
@@ -55,7 +55,7 @@ export default function CreateActivity() {
             ]}
             placeholder={[
               "Masukkan nama aktivitas",
-              "Masukkan limit relawan",
+              "Masukkan limit orang",
               "Masukkan tanggal mulai",
               "Masukkan tanggal selesai",
               "Masukkan deadline registrasi",
@@ -64,6 +64,26 @@ export default function CreateActivity() {
             type={["text", "number", "date", "date", "date", "text"]}
             labelTextSize="md"
           />
+          <div>
+            <label htmlFor="deskripsiAktivitas">
+              Deskripsi Aktivitas (min. 20 kata)
+            </label>
+            <textarea
+              name="deskripsiAktivitas"
+              placeholder="Masukkan deskripsi singkat aktivitas"
+              id=""
+              className="w-full appearance-none rounded border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-green-500"
+            />
+          </div>
+          <div>
+            <label htmlFor="detailAktivitas">Detail Aktivitas</label>
+            <textarea
+              name="detailAktivitas"
+              placeholder="Metode briefing, kegiatan, dll."
+              id=""
+              className="w-full appearance-none rounded border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-green-500"
+            />
+          </div>
           <TerritoryForm
             setSelectedProvince={setSelectedProvince}
             setSelectedRegency={setSelectedRegency}
@@ -87,6 +107,15 @@ export default function CreateActivity() {
             selectedLocationType={selectedLocationType}
             disabled={false}
           />
+          <div>
+            <label htmlFor="detailPekerjaan">Detail Pekerjaan</label>
+            <textarea
+              name="detailPekerjaan"
+              placeholder="Tugas, total jam, kriteria, perlengkapan, dll."
+              id=""
+              className="w-full appearance-none rounded border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-green-500"
+            />
+          </div>
 
           <DayTimeForm
             setDayInputNumber={setDayInputNumber}

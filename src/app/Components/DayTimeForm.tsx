@@ -106,8 +106,9 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
           e.preventDefault();
           addTimeField();
         }}
+        className="mt-4 w-full rounded-md bg-green-500 py-2 text-white"
       >
-        add
+        Tambahkan Waktu
       </button>
     </>
   );
