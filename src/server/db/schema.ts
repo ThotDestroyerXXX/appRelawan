@@ -167,6 +167,8 @@ export const activity = createTable("activity", {
   registration_deadline_date: date("registration_deadline_date").notNull(),
   thumbnail_url: text("thumbnail_url"),
   activity_person_limit: integer("activity_person_limit").notNull(),
+  binusian_only: boolean("binusian_only").notNull(),
+  require_confirmation: boolean("require_confirmation").notNull(),
   activity_status_id: integer("activity_status_id")
     .notNull()
     .references(() => activityStatus.id),

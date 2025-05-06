@@ -9,11 +9,17 @@ import SignForm from "~/app/Components/signForm";
 import TerritoryForm, {
   type TerritoryProps,
 } from "~/app/Components/territoryForm";
+import Image from "next/image";
+import { Button } from "~/app/Components/button";
+import { createActivity } from "~/app/api/CreateActivity/CreateActivity";
 
 export default function CreateActivity() {
   const [timeFields, setTimeFields] = useState<{ id: string; value: string }[]>(
     [{ id: uuidv4(), value: "" }],
   );
+  const [finishFields, setFinishFields] = useState<
+    { id: string; value: string }[]
+  >([{ id: uuidv4(), value: "" }]);
   const [dayInputNumber, setDayInputNumber] = useState<(TypeProps | null)[]>(
     [],
   );
@@ -37,13 +43,42 @@ export default function CreateActivity() {
   const [selectedLocationType, setSelectedLocationType] =
     useState<TypeProps | null>(null);
 
+  const [galleryImages, setGalleryImages] = useState<File[] | null>(null);
+
+  const [thumbnailImage, setThumbnailImage] = useState<File | null>(null);
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const { handleSubmit } = createActivity(setLoading, setError);
+
   return (
     <main className="flex flex-col gap-6 bg-[#F8EDE3] p-10">
       <div>
         <h1 className="text-3xl">Buat Aktivitas</h1>
       </div>
       <div className="rounded-lg bg-white p-10 shadow-md">
-        <form action="" className="flex flex-col gap-6">
+        <form
+          className="flex flex-col gap-6"
+          onSubmit={(e) =>
+            handleSubmit(
+              e,
+              galleryImages,
+              thumbnailImage,
+              selectedProvince,
+              selectedRegency,
+              selectedSubDistrict,
+              selectedWard,
+              selectedCategory1,
+              selectedCategory2,
+              selectedActivityType,
+              selectedLocationType,
+              timeFields,
+              dayInputNumber,
+              finishFields,
+            )
+          }
+        >
           <SignForm
             label={[
               "Nama Aktivitas",
@@ -122,7 +157,91 @@ export default function CreateActivity() {
             setTimeFields={setTimeFields}
             dayInputNumber={dayInputNumber}
             timeFields={timeFields}
+            setFinishFields={setFinishFields}
+            finishFields={finishFields}
           />
+
+          <div className="flex flex-col">
+            <label htmlFor="thumbnailImage">Gambar thumbnail</label>
+            <input
+              name="thumbnailImage"
+              type="file"
+              accept="image/png, image/jpg, image/jpeg, image/webp"
+              onChange={(e) => setThumbnailImage(e.target.files?.[0] ?? null)}
+            />
+          </div>
+          {thumbnailImage && (
+            <div className="flex flex-row flex-wrap gap-2">
+              <div className="flex flex-col items-center gap-2">
+                <Image
+                  src={URL.createObjectURL(thumbnailImage)}
+                  alt={`Preview thumbnail`}
+                  width={200}
+                  height={200}
+                  className="rounded-md object-cover"
+                />
+                <p>{thumbnailImage.name}</p>
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col">
+            <label htmlFor="galleryImage">Gambar Gallery</label>
+            <input
+              name="galleryImage"
+              type="file"
+              multiple
+              accept="image/png, image/jpg, image/jpeg, image/webp"
+              onChange={(e) =>
+                setGalleryImages(
+                  e.target.files ? Array.from(e.target.files) : null,
+                )
+              }
+            />
+          </div>
+          {galleryImages && (
+            <div className="flex flex-row flex-wrap gap-2">
+              {galleryImages.map((image, index) => (
+                <div
+                  key={`${image.name}_${index}`}
+                  className="flex flex-col items-center gap-2"
+                >
+                  <Image
+                    src={URL.createObjectURL(image)}
+                    alt={`Preview ${index}`}
+                    width={200}
+                    height={200}
+                    className="rounded-md object-cover"
+                  />
+                  <p>{image.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="flex flex-row items-center gap-2">
+            <input
+              type="checkbox"
+              name="binusianOnly"
+              className="h-5 w-5 rounded-sm"
+            />
+            <label htmlFor="binusianOnly">BINUSIAN Only</label>
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <input
+              type="checkbox"
+              name="requireConfirmation"
+              className="h-5 w-5 rounded-sm"
+            />
+            <label htmlFor="requireConfirmation">Confirm Participants</label>
+          </div>
+          <div>{error && <p className="text-red-500">{error}</p>}</div>
+          <Button
+            className="h-10 bg-green-500 hover:bg-green-600"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "membuat aktivitas..." : "Buat Aktivitas"}
+          </Button>
         </form>
       </div>
     </main>
