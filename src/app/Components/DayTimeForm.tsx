@@ -55,6 +55,7 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
 
   const addTimeField = () => {
     setTimeFields([...timeFields, { id: uuidv4(), value: "" }]);
+    setFinishFields([...finishFields, { id: uuidv4(), value: "" }]);
     setDayInputNumber([...dayInputNumber, null]);
   };
   const removeTimeField = (index: number) => {

@@ -3,6 +3,11 @@ import { authenticator } from "~/hooks/authenticator";
 import { api } from "~/trpc/react";
 import { upload } from "@imagekit/next";
 import { type TerritoryProps } from "~/app/Components/territoryForm";
+import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { formatTime } from "~/lib/utils";
 
 export const days: TypeProps[] = [
   { id: 1, name: "Senin" },
@@ -53,10 +58,92 @@ export const getTypeData = () => {
   }
 };
 
-export const createActivity = (
+export const CreateOneActivity = (
   setLoading: (loading: boolean) => void,
   setError: (e: string | null) => void,
 ) => {
+  const [galleryUrl, setGalleryUrl] = useState<(string | undefined)[]>([]);
+  const utils = api.useUtils();
+  const router = useRouter();
+
+  const { mutateAsync: mutateTimeDetail } =
+    api.activity.createActivityTimeDetail.useMutation({
+      onMutate() {
+        setLoading(true);
+      },
+      onSuccess: async () => {
+        await utils.invalidate();
+      },
+      onError(error) {
+        if (error.message) {
+          setLoading(false);
+          setError(error.message);
+        }
+
+        const fieldErrors = error.data?.zodError?.fieldErrors;
+        if (fieldErrors && Object.keys(fieldErrors).length > 0) {
+          const firstKey = Object.keys(fieldErrors)[0]!;
+          setError(fieldErrors[firstKey]?.[0] ?? null);
+        }
+      },
+    });
+
+  const { mutateAsync } = api.activity.createActivity.useMutation({
+    onMutate() {
+      setLoading(true);
+    },
+    onError(error) {
+      if (error.message) {
+        setLoading(false);
+        setError(error.message);
+      }
+
+      const fieldErrors = error.data?.zodError?.fieldErrors;
+      if (fieldErrors && Object.keys(fieldErrors).length > 0) {
+        const firstKey = Object.keys(fieldErrors)[0]!;
+        setError(fieldErrors[firstKey]?.[0] ?? null);
+      }
+    },
+  });
+
+  const { mutateAsync: mutateActivityDetail } =
+    api.activity.createActivityDetail.useMutation({
+      onMutate() {
+        setLoading(true);
+      },
+      onError(error) {
+        if (error.message) {
+          setLoading(false);
+          setError(error.message);
+        }
+
+        const fieldErrors = error.data?.zodError?.fieldErrors;
+        if (fieldErrors && Object.keys(fieldErrors).length > 0) {
+          const firstKey = Object.keys(fieldErrors)[0]!;
+          setError(fieldErrors[firstKey]?.[0] ?? null);
+        }
+      },
+    });
+
+  const { mutateAsync: mutateImageGallery } =
+    api.activity.createActivityGallery.useMutation({
+      onMutate() {
+        setLoading(true);
+      },
+      onError(error) {
+        if (error.message) {
+          setLoading(false);
+          setError(error.message);
+        }
+
+        const fieldErrors = error.data?.zodError?.fieldErrors;
+        if (fieldErrors && Object.keys(fieldErrors).length > 0) {
+          const firstKey = Object.keys(fieldErrors)[0]!;
+          setError(fieldErrors[firstKey]?.[0] ?? null);
+        }
+      },
+    });
+
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
     galleryImages: File[] | null,
@@ -72,9 +159,11 @@ export const createActivity = (
     timeFields: { id: string; value: string }[],
     dayInputNumber: (TypeProps | null)[],
     finishFields: { id: string; value: string }[],
+    organization_id: string,
   ) => {
-    setLoading(true);
     e.preventDefault();
+    setLoading(true);
+
     const form = new FormData(e.currentTarget);
     const name = form.get("namaaktivitas") as string;
     const limit = form.get("limitorang") as string;
@@ -112,48 +201,238 @@ export const createActivity = (
       dayInputNumber,
       finishFields,
     );
-    setLoading(false);
-    // if (galleryImages) {
-    //   console.log(galleryImages);
-    //   for (const image of galleryImages) {
-    //     try {
-    //       const authParams = await authenticator();
-    //       const { signature, expire, token, publicKey } = authParams;
-    //       const uploadResponse = await upload({
-    //         // Authentication parameters
-    //         expire: expire,
-    //         token,
-    //         signature,
-    //         publicKey,
-    //         file: image,
-    //         fileName: image.name, // Optionally set a custom file name
-    //         folder: "/AppRelawan",
-    //         useUniqueFileName: true,
-    //         overwriteFile: true,
-    //       });
-    //       console.log(uploadResponse.url);
-    //     } catch (e) {
-    //       console.log(e);
-    //     }
-    //   }
-    // }
 
-    // await api.activity.createActivity.mutateAsync({
-    //   name,
-    //   limit: Number(limit),
-    //   startDate,
-    //   endDate,
-    //   registrationDeadline,
-    //   locationDetail,
-    //   selectedCategory1,
-    //   selectedCategory2,
-    //   selectedActivityType,
-    //   selectedLocationType,
-    //   selectedProvince,
-    //   selectedRegency,
-    //   selectedSubDistrict,
-    //   selectedWard,
-    // });
+    setGalleryUrl([]);
+    setError(null);
+
+    if (!thumbnailImages || thumbnailImages.size === 0) {
+      setError("Thumbnail image is required");
+      setLoading(false);
+      return;
+    }
+
+    if (!galleryImages || galleryImages.length === 0) {
+      setError("Gallery images are required");
+      setLoading(false);
+      return;
+    }
+
+    for (const element of dayInputNumber) {
+      if (!element?.name || element.name.trim() === "") {
+        setError("All days are required and must have valid names");
+        setLoading(false);
+        return;
+      }
+    }
+    for (const element of timeFields) {
+      if (element.value === "" || element.value === null) {
+        setError("All start time is required");
+        setLoading(false);
+        return;
+      }
+    }
+    for (const element of finishFields) {
+      if (element.value === "" || element.value === null) {
+        setError("All end time is required");
+        setLoading(false);
+        return;
+      }
+    }
+
+    const activitySchema = z.object({
+      name: z
+        .string()
+        .min(1, "Nama aktivitas harus diisi")
+        .max(255, "Nama aktivitas harus kurang dari 255 karakter"),
+      start_date: z.date().min(new Date(), "Tanggal mulai harus di masa depan"),
+      end_date: z.date().min(new Date(), "Tanggal selesai harus di masa depan"),
+      province: z.string().nonempty("Provinsi harus diisi"),
+      city: z.string().nonempty("Kota harus diisi"),
+      subdistrict: z.string().nonempty("Kecamatan harus diisi"),
+      ward: z.string().nonempty("Kelurahan harus diisi"),
+      address: z
+        .string()
+        .nonempty("Alamat harus diisi")
+        .max(255, "Alamat harus kurang dari 255 karakter"),
+      registration_deadline_date: z
+        .date()
+        .min(new Date(), "Deadline registrasi harus di masa depan"),
+      activity_person_limit: z
+        .number()
+        .min(1, "limit orang harus minimal 1")
+        .max(2000, "limit orang harus kurang dari 2000"),
+      binusian_only: z.boolean(),
+      require_confirmation: z.boolean(),
+      description: z
+        .string()
+        .nonempty("Description is required")
+        .min(20, "Deskripsi Aktivitas harus lebih dari 20 karakter")
+        .max(1000, "Deskripsi Aktivitas harus kurang dari 1000 karakter"),
+      activity_detail: z
+        .string()
+        .nonempty("Activity detail is required")
+        .min(20, "Detail aktivitas harus lebih dari 20 karakter")
+        .max(1000, "Detail aktivitas harus kurang dari 1000 karakter"),
+      job_detail: z
+        .string()
+        .nonempty("Detail pekerjaan harus diisi")
+        .min(20, "Detail pekerjaan harus lebih dari 20 karakter")
+        .max(1000, "Detail pekerjaan harus kurang dari 1000 karakter"),
+    });
+
+    try {
+      const binusianValidate = binusianOnly !== null && binusianOnly === "on";
+      const requireConfirmationValidate =
+        binusianOnly !== null && requireConfirmation === "on";
+      const activityData = {
+        name,
+        start_date: new Date(startDate),
+        end_date: new Date(endDate),
+        province: selectedProvince?.label ?? "",
+        city: selectedRegency?.label ?? "",
+        subdistrict: selectedSubDistrict?.label ?? "",
+        ward: selectedWard?.label ?? "",
+        address: locationDetail,
+        registration_deadline_date: new Date(registrationDeadline),
+        activity_person_limit: parseInt(limit),
+        binusian_only: binusianValidate,
+        require_confirmation: requireConfirmationValidate,
+        description: activityDescription,
+        activity_detail: activityDetail,
+        job_detail: jobDetail,
+      };
+
+      // Validate the data using zod
+      activitySchema.parse(activityData);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const fieldErrors = error.flatten().fieldErrors;
+        if (fieldErrors && Object.keys(fieldErrors).length > 0) {
+          const firstKey = Object.keys(fieldErrors)[0]!;
+          setError(fieldErrors[firstKey]?.[0] ?? null);
+        }
+      } else {
+        setError("An unexpected error occurred");
+      }
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const authParams = await authenticator();
+      const { signature, expire, token, publicKey } = authParams;
+      const uploadResponse = await upload({
+        // Authentication parameters
+        expire: expire,
+        token,
+        signature,
+        publicKey,
+        file: thumbnailImages,
+        fileName: thumbnailImages.name, // Optionally set a custom file name
+        folder: "/AppRelawan",
+        useUniqueFileName: true,
+        overwriteFile: true,
+      });
+
+      for (const image of galleryImages) {
+        const authParamGallery = await authenticator();
+        const { signature, expire, token, publicKey } = authParamGallery;
+        try {
+          const uploadResponseGallery = await upload({
+            // Authentication parameters
+            expire: expire,
+            token,
+            signature,
+            publicKey,
+            file: image,
+            fileName: image.name, // Optionally set a custom file name
+            folder: "/AppRelawan",
+            useUniqueFileName: true,
+            overwriteFile: true,
+          });
+          setGalleryUrl((prev) => [...prev, uploadResponseGallery.url]);
+        } catch (e) {
+          setError(
+            e instanceof Error ? e.message : "An unexpected error occurred",
+          );
+          setLoading(false);
+          return;
+        }
+      }
+
+      const activityId = await mutateAsync({
+        name,
+        start_date: new Date(startDate),
+        end_date: new Date(endDate),
+        province: selectedProvince?.label ?? "",
+        city: selectedRegency?.label ?? "",
+        subdistrict: selectedSubDistrict?.label ?? "",
+        ward: selectedWard?.label ?? "",
+        address: locationDetail,
+        registration_deadline_date: new Date(registrationDeadline),
+        thumbnail_url: uploadResponse.url ?? "",
+        activity_person_limit: parseInt(limit),
+        binusian_only: binusianOnly === "on",
+        require_confirmation: requireConfirmation === "on",
+        location_type_id: selectedLocationType?.id ?? 0,
+        organization_id: organization_id,
+        activity_category_id_1: selectedCategory1?.id ?? 0,
+        activity_category_id_2: selectedCategory2?.id ?? 0,
+        activity_type_id: selectedActivityType?.id ?? 0,
+      });
+
+      await utils.invalidate();
+
+      if (activityId) {
+        for (let i = 0; i < dayInputNumber.length; i++) {
+          const day = dayInputNumber[i]?.name;
+          const startTime = timeFields[i]?.value ?? "";
+          const endTime = finishFields[i]?.value ?? "";
+
+          if (!startTime || !endTime) {
+            setError("Start time and end time are required for all days");
+            setLoading(false);
+            return;
+          }
+
+          await mutateTimeDetail({
+            activity_id: activityId[0]?.id ?? uuidv4(),
+            start_time: formatTime(startTime), // Format the start time
+            end_time: formatTime(endTime), // Format the end time
+            day: day ?? "",
+          });
+        }
+      }
+
+      if (activityId) {
+        const activityDetailId = await mutateActivityDetail({
+          activity_id: activityId[0]?.id ?? uuidv4(),
+          description: activityDescription,
+          activity_detail: activityDetail,
+          job_detail: jobDetail,
+        });
+
+        await utils.invalidate();
+
+        for (const image of galleryUrl) {
+          await mutateImageGallery({
+            activity_detail_id: activityDetailId[0]?.id ?? uuidv4(),
+            image_url: image ?? "",
+          });
+        }
+        await utils.invalidate();
+        setGalleryUrl([]);
+        router.push("/Pages/Organization/Dashboard");
+        router.refresh();
+        setLoading(false);
+      }
+
+      setLoading(false);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "An unexpected error occurred");
+      setLoading(false);
+      return;
+    }
   };
   return { handleSubmit };
 };
