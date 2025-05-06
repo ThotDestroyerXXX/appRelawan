@@ -7,6 +7,8 @@ import { FaTrashAlt } from "react-icons/fa";
 interface DayTimeFormProps {
   timeFields: { id: string; value: string }[];
   setTimeFields: (value: { id: string; value: string }[]) => void;
+  finishFields: { id: string; value: string }[];
+  setFinishFields: (value: { id: string; value: string }[]) => void;
   dayInputNumber: (TypeProps | null)[];
   setDayInputNumber: (value: (TypeProps | null)[]) => void;
 }
@@ -16,6 +18,8 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
   setTimeFields,
   dayInputNumber,
   setDayInputNumber,
+  finishFields,
+  setFinishFields,
 }) => {
   const customStyles = {
     control: () => "w-full",
@@ -31,6 +35,17 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
     }
     setTimeFields(values);
   };
+  const handleFinishChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const values = [...finishFields];
+    if (values[index]) {
+      values[index].value = event.target.value;
+      console.log(values);
+    }
+    setFinishFields(values);
+  };
 
   const handleDayChange = (index: number, option: TypeProps | null) => {
     const values = [...dayInputNumber];
@@ -44,9 +59,11 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
   };
   const removeTimeField = (index: number) => {
     const updatedValues = timeFields.filter((_, i) => i !== index);
+    const updatedFinishValues = finishFields.filter((_, i) => i !== index);
     const updatedDayInputNumber = dayInputNumber.filter((_, i) => i !== index);
     setDayInputNumber(updatedDayInputNumber);
     setTimeFields(updatedValues);
+    setFinishFields(updatedFinishValues);
   };
   return (
     <>
@@ -78,7 +95,7 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
               htmlFor={`time-${index}`}
               className="mb-2 block text-sm text-gray-700"
             >
-              Waktu
+              Waktu Mulai
             </label>
             <div className="flex flex-row gap-3">
               <input
@@ -88,6 +105,24 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
                 className="w-full appearance-none rounded border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-green-500"
                 value={timeField.value}
                 onChange={(e) => handleInputChange(index, e)}
+              />
+            </div>
+          </div>
+          <div className="flex w-full flex-col">
+            <label
+              htmlFor={`finish-time-${index}`}
+              className="mb-2 block text-sm text-gray-700"
+            >
+              Waktu Selesai
+            </label>
+            <div className="flex flex-row gap-3">
+              <input
+                type="time"
+                id={`time-${index}`}
+                name={`finish-time-${index}`}
+                className="w-full appearance-none rounded border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-green-500"
+                value={finishFields[index]?.value}
+                onChange={(e) => handleFinishChange(index, e)}
               />
               <div className="flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm bg-red-500 text-white hover:bg-red-600">
                 <FaTrashAlt
