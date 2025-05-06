@@ -11,7 +11,9 @@ import TerritoryForm, {
 } from "~/app/Components/territoryForm";
 import Image from "next/image";
 import { Button } from "~/app/Components/button";
-import { createActivity } from "~/app/api/CreateActivity/CreateActivity";
+import { CreateOneActivity } from "~/app/api/CreateActivity/CreateActivity";
+import { authClient } from "~/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function CreateActivity() {
   const [timeFields, setTimeFields] = useState<{ id: string; value: string }[]>(
@@ -20,9 +22,9 @@ export default function CreateActivity() {
   const [finishFields, setFinishFields] = useState<
     { id: string; value: string }[]
   >([{ id: uuidv4(), value: "" }]);
-  const [dayInputNumber, setDayInputNumber] = useState<(TypeProps | null)[]>(
-    [],
-  );
+  const [dayInputNumber, setDayInputNumber] = useState<(TypeProps | null)[]>([
+    { id: 0, name: "" },
+  ]);
   const [selectedProvince, setSelectedProvince] =
     useState<TerritoryProps | null>(null);
   const [selectedRegency, setSelectedRegency] = useState<TerritoryProps | null>(
@@ -50,7 +52,14 @@ export default function CreateActivity() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { handleSubmit } = createActivity(setLoading, setError);
+  const { handleSubmit } = CreateOneActivity(setLoading, setError);
+  const router = useRouter();
+
+  const organization = authClient.useSession();
+  if (organization.data?.user.organization_id === null) {
+    router.push("/");
+    return null;
+  }
 
   return (
     <main className="flex flex-col gap-6 bg-[#F8EDE3] p-10">
@@ -76,6 +85,7 @@ export default function CreateActivity() {
               timeFields,
               dayInputNumber,
               finishFields,
+              organization.data?.user.organization_id ?? "",
             )
           }
         >
