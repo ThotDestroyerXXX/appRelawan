@@ -4,7 +4,6 @@ import { api } from "~/trpc/react";
 import { upload } from "@imagekit/next";
 import { type TerritoryProps } from "~/app/Components/territoryForm";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { formatTime } from "~/lib/utils";
@@ -62,7 +61,6 @@ export const CreateOneActivity = (
   setLoading: (loading: boolean) => void,
   setError: (e: string | null) => void,
 ) => {
-  const [galleryUrl, setGalleryUrl] = useState<(string | undefined)[]>([]);
   const utils = api.useUtils();
   const router = useRouter();
 
@@ -163,6 +161,7 @@ export const CreateOneActivity = (
   ) => {
     e.preventDefault();
     setLoading(true);
+    const galleryUrls: string[] = [];
 
     const form = new FormData(e.currentTarget);
     const name = form.get("namaaktivitas") as string;
@@ -202,7 +201,6 @@ export const CreateOneActivity = (
       finishFields,
     );
 
-    setGalleryUrl([]);
     setError(null);
 
     if (!thumbnailImages || thumbnailImages.size === 0) {
@@ -333,7 +331,6 @@ export const CreateOneActivity = (
         useUniqueFileName: true,
         overwriteFile: true,
       });
-
       for (const image of galleryImages) {
         const authParamGallery = await authenticator();
         const { signature, expire, token, publicKey } = authParamGallery;
@@ -350,7 +347,7 @@ export const CreateOneActivity = (
             useUniqueFileName: true,
             overwriteFile: true,
           });
-          setGalleryUrl((prev) => [...prev, uploadResponseGallery.url]);
+          galleryUrls.push(uploadResponseGallery.url ?? "");
         } catch (e) {
           setError(
             e instanceof Error ? e.message : "An unexpected error occurred",
@@ -404,6 +401,8 @@ export const CreateOneActivity = (
         }
       }
 
+      await utils.invalidate();
+
       if (activityId) {
         const activityDetailId = await mutateActivityDetail({
           activity_id: activityId[0]?.id ?? uuidv4(),
@@ -414,19 +413,16 @@ export const CreateOneActivity = (
 
         await utils.invalidate();
 
-        for (const image of galleryUrl) {
+        for (const image of galleryUrls) {
           await mutateImageGallery({
             activity_detail_id: activityDetailId[0]?.id ?? uuidv4(),
             image_url: image ?? "",
           });
         }
-        await utils.invalidate();
-        setGalleryUrl([]);
-        router.push("/Pages/Organization/Dashboard");
-        router.refresh();
-        setLoading(false);
       }
-
+      await utils.invalidate();
+      router.push("/Pages/Organization/Dashboard");
+      router.refresh();
       setLoading(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "An unexpected error occurred");
