@@ -28,6 +28,13 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/Pages/Organization/")
   ) {
     return NextResponse.redirect(new URL("/Pages/User/Dashboard", request.url));
+  } else if (
+    session?.user.organization_id &&
+    request.nextUrl.pathname.startsWith("/Pages/User/")
+  ) {
+    return NextResponse.redirect(
+      new URL("/Pages/Organization/Dashboard", request.url),
+    );
   }
 }
 

@@ -89,7 +89,7 @@ export function AppSidebar({ session }: { readonly session: Session | null }) {
                 ? organizationMenu.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
-                        <Link href={item.url}>
+                        <Link href={item.url} shallow={true} prefetch={true}>
                           {item.icon}
                           <span>{item.title}</span>
                         </Link>
@@ -99,7 +99,7 @@ export function AppSidebar({ session }: { readonly session: Session | null }) {
                 : userMenu.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
-                        <Link href={item.url}>
+                        <Link href={item.url} shallow={true} prefetch={true}>
                           {item.icon}
                           <span>{item.title}</span>
                         </Link>
@@ -115,7 +115,7 @@ export function AppSidebar({ session }: { readonly session: Session | null }) {
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <Link href={item.url}>
+                  <Link href={item.url} shallow={true} prefetch={true}>
                     {item.icon}
                     <span>{item.title}</span>
                   </Link>
