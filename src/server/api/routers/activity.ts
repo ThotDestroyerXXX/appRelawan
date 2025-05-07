@@ -1,4 +1,4 @@
-import { count, eq, avg, desc } from "drizzle-orm";
+import { count, eq, avg, desc, and } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { v4 as uuidv4 } from "uuid";
@@ -12,7 +12,14 @@ import {
   organizationRatingReview,
   activityTimeDetail,
   activityGallery,
+  activityRatingReview,
+  user,
+  activityStatus,
+  userActivityStatus,
+  userActivity,
 } from "~/server/db/schema";
+import { alias } from "drizzle-orm/pg-core";
+import { start } from "repl";
 export const activityRouter = createTRPCRouter({
   getActivityCount: publicProcedure.query(async ({ ctx }) => {
     const result = await ctx.db
@@ -23,23 +30,43 @@ export const activityRouter = createTRPCRouter({
     return result[0]?.count ?? 0;
   }),
   getListActivity: publicProcedure.query(async ({ ctx }) => {
+    const activityCategory1 = alias(activityCategory, "activityCategory1");
+    const activityCategory2 = alias(activityCategory, "activityCategory2");
     const result = await ctx.db
       .select({
         id: activity.id,
         name: activity.name,
         desc: activityDetail.description,
         company: organization.name,
-        organizationrating: avg(organizationRatingReview.rating),
+        company_logo: organization.logo_url,
         thumbnail: activity.thumbnail_url,
+        start_date: activity.start_date,
         end_date: activity.end_date,
+        activityStatus: activityStatus.name,
+        activityCategory1: activityCategory1.name,
+        activityCategory2: activityCategory2.name,
+        activityType: activityType.name,
+        locationType: locationType.name,
+        province: activity.province,
       })
       .from(activity)
       .innerJoin(activityDetail, eq(activityDetail.activity_id, activity.id))
       .innerJoin(organization, eq(organization.id, activity.organization_id))
       .innerJoin(
-        organizationRatingReview,
-        eq(organizationRatingReview.organization_id, organization.id),
+        activityStatus,
+        eq(activityStatus.id, activity.activity_status_id),
       )
+      .innerJoin(activityType, eq(activityType.id, activity.activity_type_id))
+      .innerJoin(
+        activityCategory1,
+        eq(activityCategory1.id, activity.activity_category_id_1),
+      )
+      .innerJoin(
+        activityCategory2,
+        eq(activityCategory2.id, activity.activity_category_id_2),
+      )
+      .innerJoin(locationType, eq(locationType.id, activity.location_type_id))
+      .where(eq(activity.activity_status_id, 1))
       .groupBy(
         activity.id,
         activity.name,
@@ -47,8 +74,16 @@ export const activityRouter = createTRPCRouter({
         organization.name,
         activity.thumbnail_url,
         activity.end_date,
+        activityStatus.name,
+        activityCategory1.name,
+        activityCategory2.name,
+        activityType.name,
+        locationType.name,
+        activity.province,
+        organization.logo_url,
       )
-      .orderBy(desc(activity.end_date));
+      .orderBy(desc(activity.end_date))
+      .execute();
 
     return result;
   }),
@@ -61,6 +96,83 @@ export const activityRouter = createTRPCRouter({
   getActivityType: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.select().from(activityType).execute();
   }),
+
+  getActivityDetail: publicProcedure
+    .input(
+      z.object({
+        id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const activityCategory1 = alias(activityCategory, "activityCategory1");
+      const activityCategory2 = alias(activityCategory, "activityCategory2");
+      const result = await ctx.db
+        .select({
+          activity: activity,
+          activityDetail: activityDetail,
+          organization: organization,
+          locationType: locationType.name,
+          activityCategory1: activityCategory1.name,
+          activityCategory2: activityCategory2.name,
+          activityType: activityType.name,
+          activityStatus: activityStatus.name,
+          userActivity: userActivity,
+          userActivityStatus: userActivityStatus.name,
+        })
+        .from(activity)
+        .innerJoin(activityDetail, eq(activityDetail.activity_id, activity.id))
+        .innerJoin(organization, eq(organization.id, activity.organization_id))
+        .innerJoin(locationType, eq(locationType.id, activity.location_type_id))
+        .innerJoin(
+          activityCategory1,
+          eq(activityCategory1.id, activity.activity_category_id_1),
+        )
+        .innerJoin(
+          activityCategory2,
+          eq(activityCategory2.id, activity.activity_category_id_2),
+        )
+        .innerJoin(activityType, eq(activityType.id, activity.activity_type_id))
+        .innerJoin(
+          activityStatus,
+          eq(activityStatus.id, activity.activity_status_id),
+        )
+        .leftJoin(userActivity, eq(userActivity.activity_id, activity.id))
+        .leftJoin(
+          userActivityStatus,
+          eq(userActivityStatus.id, userActivity.user_activity_status_id),
+        )
+        .where(eq(activity.id, input.id))
+        .groupBy(
+          activity.id,
+          activityDetail.id,
+          organization.name,
+          locationType.name,
+          activityCategory1.name,
+          activityCategory2.name,
+          activityType.name,
+          activityStatus.name,
+          userActivityStatus.name,
+          organization.id,
+          userActivity.id,
+        )
+        .execute();
+
+      return result[0] ?? null;
+    }),
+
+  getActivityTimeDetailByActivityId: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.db
+        .select()
+        .from(activityTimeDetail)
+        .where(eq(activityTimeDetail.activity_id, input.activity_id))
+        .execute();
+    }),
 
   createActivity: publicProcedure
     .input(
@@ -211,5 +323,62 @@ export const activityRouter = createTRPCRouter({
         })
         .returning({ id: activityGallery.id })
         .execute();
+    }),
+
+  getOrganizationActivity: publicProcedure
+    .input(
+      z.object({
+        organization_id: z.string().nonempty("User ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const activityCategory1 = alias(activityCategory, "activityCategory1");
+      const activityCategory2 = alias(activityCategory, "activityCategory2");
+      const result = await ctx.db
+        .select({
+          id: activity.id,
+          name: activity.name,
+          desc: activityDetail.description,
+          company: organization.name,
+          thumbnail: activity.thumbnail_url,
+          end_date: activity.end_date,
+          activityStatus: activityStatus.name,
+          activityCategory1: activityCategory1.name,
+          activityCategory2: activityCategory2.name,
+          activityType: activityType.name,
+        })
+        .from(activity)
+        .innerJoin(activityDetail, eq(activityDetail.activity_id, activity.id))
+        .innerJoin(organization, eq(organization.id, activity.organization_id))
+        .innerJoin(
+          activityStatus,
+          eq(activityStatus.id, activity.activity_status_id),
+        )
+        .innerJoin(activityType, eq(activityType.id, activity.activity_type_id))
+        .innerJoin(
+          activityCategory1,
+          eq(activityCategory1.id, activity.activity_category_id_1),
+        )
+        .innerJoin(
+          activityCategory2,
+          eq(activityCategory2.id, activity.activity_category_id_2),
+        )
+        .where(eq(activity.organization_id, input.organization_id))
+        .groupBy(
+          activity.id,
+          activity.name,
+          activityDetail.description,
+          organization.name,
+          activity.thumbnail_url,
+          activity.end_date,
+          activityStatus.name,
+          activityCategory1.name,
+          activityCategory2.name,
+          activityType.name,
+        )
+        .orderBy(desc(activity.end_date))
+        .execute();
+
+      return result;
     }),
 });

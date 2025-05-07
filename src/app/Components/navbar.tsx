@@ -27,7 +27,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
           />
         </div>
         <div className="z-10 flex gap-6">
-          <Link href="/">
+          <Link href="/" shallow={true} prefetch={true}>
             <button className="rounded-md pb-2 pl-4 pr-4 pt-2 text-xl font-bold">
               ImpactHub
             </button>
@@ -41,6 +41,8 @@ const Navbar = ({ session }: { session: Session | null }) => {
               href={
                 pathname != "/Pages/Auth/signIn" ? "/Pages/Auth/signIn" : ""
               }
+              shallow={true}
+              prefetch={true}
             >
               <button
                 className="rounded-md border-2 border-[#F8EDE3] pb-1 pl-3 pr-3 pt-1 text-white hover:bg-[#F8EDE3] hover:text-black"

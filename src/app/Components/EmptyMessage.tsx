@@ -13,7 +13,7 @@ export default function EmptyMessage({
   placeholderBtn,
 }: Readonly<EmptyMessageProps>) {
   return (
-    <div className="absolute left-[50%] top-[50%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 text-center">
+    <div className="flex flex-col items-center gap-4 text-center">
       <div className="flex flex-col items-center text-center opacity-30">
         <RiInbox2Fill className="h-20 w-20" />
         <h1 className="text-[1.3em]">Belum ada data</h1>

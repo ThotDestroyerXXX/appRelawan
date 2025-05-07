@@ -2,6 +2,8 @@
 import { useRouter } from "next/navigation";
 import { authClient } from "~/lib/auth-client";
 import { useState } from "react";
+import Loading from "./loading";
+import { Button } from "./button";
 
 const SignOutButton = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -24,9 +26,16 @@ const SignOutButton = () => {
     }
   };
   return (
-    <button onClick={handleSignOut} disabled={isPending}>
-      Sign Out
-    </button>
+    <>
+      {isPending && <Loading />}
+      <Button
+        onClick={handleSignOut}
+        disabled={isPending}
+        className="rounded-md border-2 border-[#F8EDE3] bg-transparent pb-1 pl-3 pr-3 pt-1 text-white hover:bg-[#F8EDE3] hover:text-black"
+      >
+        Sign Out
+      </Button>
+    </>
   );
 };
 
