@@ -1,12 +1,11 @@
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import { type Url } from "url";
 
 interface LayananImpactHubCardProps {
   image: StaticImageData[];
   judul: string[];
   deskripsi: string[];
-  link: string[] | Url[];
+  link: string[];
   placeholder: string[];
 }
 
@@ -32,7 +31,7 @@ export default function LayananImpactHubCard({
         <p>{deskripsi[index]}</p>
       </div>
       <div className="mb-7 mt-auto">
-        <Link href={link[index] ?? ""}>
+        <Link href={link[index] ?? "/"} shallow={true} prefetch={true}>
           <button className="h-10 w-44 items-center rounded-md border-2 border-[#BDD2B6] text-center text-black hover:bg-[#BDD2B6]">
             {placeholder[index]}
           </button>
