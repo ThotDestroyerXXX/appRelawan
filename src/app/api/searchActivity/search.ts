@@ -23,6 +23,20 @@ export const getActivityDetail = (id: string) => {
   return { activityDetail, isLoading, isFetched };
 };
 
+export const getActivityGallery = (id: string) => {
+  const {
+    data: activityGallery,
+    isLoading,
+    isFetched,
+  } = api.activity.getActivityGalleryByActivityId.useQuery(
+    { activity_id: id },
+    {
+      enabled: !!id,
+    },
+  );
+  return { activityGallery, isLoading, isFetched };
+};
+
 export const getActivityTimeDetail = (id: string) => {
   const {
     data: activityTimeDetail,
@@ -52,4 +66,18 @@ export const getUserActivityByUserId = (
     },
   );
   return { userActivity, isLoading, isFetched };
+};
+
+export const getUserActivityCount = (activity_id: string) => {
+  const {
+    data: userActivityCount,
+    isLoading,
+    isFetched,
+  } = api.userActivity.getUserActivityCount.useQuery(
+    { activity_id },
+    {
+      enabled: !!activity_id,
+    },
+  );
+  return { userActivityCount, isLoading, isFetched };
 };

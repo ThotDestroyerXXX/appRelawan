@@ -1,8 +1,9 @@
-import { eq, and } from "drizzle-orm";
+import { eq, and, count } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import {
   activity,
+  user,
   userActivity,
   userActivityApply,
   userActivityStatus,
@@ -127,5 +128,97 @@ export const userActivityRouter = createTRPCRouter({
         .returning({ id: userActivityApply.user_activity_id })
         .execute();
       return result;
+    }),
+  getUserActivityApplyByAtivityId: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { activity_id } = input;
+      return await ctx.db
+        .select({
+          user: user,
+          userActivityApply: userActivityApply,
+          userActivity: userActivity,
+          userActivityStatus: userActivityStatus.name,
+        })
+        .from(userActivity)
+        .innerJoin(user, eq(user.id, userActivity.user_id))
+        .leftJoin(
+          userActivityApply,
+          eq(userActivity.id, userActivityApply.user_activity_id),
+        )
+        .innerJoin(
+          userActivityStatus,
+          eq(userActivityStatus.id, userActivity.user_activity_status_id),
+        )
+        .where(eq(userActivity.activity_id, activity_id))
+        .execute();
+    }),
+
+  getUserActivityData: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { activity_id } = input;
+      return await ctx.db
+        .select({
+          userActivity: userActivity,
+          userActivityApply: userActivityApply,
+          user: user,
+          userActivityStatus: userActivityStatus.name,
+        })
+        .from(userActivity)
+        .innerJoin(user, eq(user.id, userActivity.user_id))
+        .leftJoin(
+          userActivityApply,
+          eq(userActivity.id, userActivityApply.user_activity_id),
+        )
+        .innerJoin(
+          userActivityStatus,
+          eq(userActivityStatus.id, userActivity.user_activity_status_id),
+        )
+        .where(eq(userActivity.activity_id, activity_id))
+        .execute();
+    }),
+
+  updateUserActivityStatus: publicProcedure
+    .input(
+      z.object({
+        id: z.string().nonempty("User activity ID is required"),
+        user_activity_status_id: z
+          .number()
+          .nonnegative("User activity status ID is required"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, user_activity_status_id } = input;
+      return await ctx.db
+        .update(userActivity)
+        .set({ user_activity_status_id })
+        .where(eq(userActivity.id, id))
+        .returning({ id: userActivity.id })
+        .execute();
+    }),
+
+  getUserActivityCount: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { activity_id } = input;
+      const result = await ctx.db
+        .select({ count: count(userActivity.id) })
+        .from(userActivity)
+        .where(eq(userActivity.activity_id, activity_id))
+        .execute();
+      return result[0]?.count ?? 0;
     }),
 });

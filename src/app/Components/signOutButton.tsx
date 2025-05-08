@@ -29,7 +29,7 @@ const SignOutButton = () => {
     <>
       {isPending && <Loading />}
       <Button
-        onClick={handleSignOut}
+        onClick={() => handleSignOut()}
         disabled={isPending}
         className="rounded-md border-2 border-[#F8EDE3] bg-transparent pb-1 pl-3 pr-3 pt-1 text-white hover:bg-[#F8EDE3] hover:text-black"
       >
