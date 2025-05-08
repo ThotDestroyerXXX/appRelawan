@@ -1,9 +1,9 @@
-import { TRPCClientErrorLike } from "@trpc/client";
+import { type TRPCClientErrorLike } from "@trpc/client";
 import { clsx, type ClassValue } from "clsx";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
-import { AppRouter } from "~/server/api/root";
+import { type AppRouter } from "~/server/api/root";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -42,3 +42,66 @@ export function showErrorMessage(
     errorMessages.forEach((msg) => toast.error(msg));
   }
 }
+
+export const registrationDeadlineText = (
+  registration_deadline_date: string,
+) => {
+  const currentDate = new Date();
+  const registrationDate = new Date(registration_deadline_date);
+  const timeDiff = registrationDate.getTime() - currentDate.getTime();
+  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
+
+  if (daysDiff > 0) {
+    return `Registration ends in ${daysDiff} days`;
+  } else if (daysDiff === 0) {
+    return "Registration ends today";
+  } else {
+    return "Registration has ended";
+  }
+};
+
+export const activityStatusText = (
+  registration_deadline_date: string,
+  start_date: string,
+  end_date: string,
+) => {
+  const currentDate = new Date();
+  const registrationDate = new Date(registration_deadline_date);
+  const startDate = new Date(start_date);
+  const endDate = new Date(end_date);
+
+  if (currentDate < registrationDate) {
+    return "Terbuka untuk pendaftaran";
+  } else if (currentDate >= registrationDate && currentDate < startDate) {
+    return "Pendaftaran ditutup";
+  } else if (currentDate >= startDate && currentDate <= endDate) {
+    return "Sedang berlangsung";
+  } else {
+    return "Telah berakhir";
+  }
+};
+
+export const userActivityStatusText = (
+  status: string,
+  start_date: string,
+  end_date: string,
+) => {
+  const currentDate = new Date();
+  const startDate = new Date(start_date);
+  const endDate = new Date(end_date);
+
+  if (status === "Diterima" && currentDate < startDate) {
+    return "Diterima, menunggu kegiatan dimulai";
+  }
+  if (
+    status === "Diterima" &&
+    currentDate >= startDate &&
+    currentDate <= endDate
+  ) {
+    return "Diterima, sedang berlangsung";
+  }
+  if (status === "Diterima" && currentDate > endDate) {
+    return "Diterima, telah berakhir";
+  }
+  return status;
+};

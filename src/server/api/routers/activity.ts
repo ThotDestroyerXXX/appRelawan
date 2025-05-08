@@ -1,4 +1,4 @@
-import { count, eq, avg, desc, and } from "drizzle-orm";
+import { count, eq, avg, desc, and, gt } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { v4 as uuidv4 } from "uuid";
@@ -14,12 +14,10 @@ import {
   activityGallery,
   activityRatingReview,
   user,
-  activityStatus,
   userActivityStatus,
   userActivity,
 } from "~/server/db/schema";
 import { alias } from "drizzle-orm/pg-core";
-import { start } from "repl";
 export const activityRouter = createTRPCRouter({
   getActivityCount: publicProcedure.query(async ({ ctx }) => {
     const result = await ctx.db
@@ -42,7 +40,6 @@ export const activityRouter = createTRPCRouter({
         thumbnail: activity.thumbnail_url,
         start_date: activity.start_date,
         end_date: activity.end_date,
-        activityStatus: activityStatus.name,
         activityCategory1: activityCategory1.name,
         activityCategory2: activityCategory2.name,
         activityType: activityType.name,
@@ -52,10 +49,6 @@ export const activityRouter = createTRPCRouter({
       .from(activity)
       .innerJoin(activityDetail, eq(activityDetail.activity_id, activity.id))
       .innerJoin(organization, eq(organization.id, activity.organization_id))
-      .innerJoin(
-        activityStatus,
-        eq(activityStatus.id, activity.activity_status_id),
-      )
       .innerJoin(activityType, eq(activityType.id, activity.activity_type_id))
       .innerJoin(
         activityCategory1,
@@ -66,7 +59,7 @@ export const activityRouter = createTRPCRouter({
         eq(activityCategory2.id, activity.activity_category_id_2),
       )
       .innerJoin(locationType, eq(locationType.id, activity.location_type_id))
-      .where(eq(activity.activity_status_id, 1))
+      .where(gt(activity.registration_deadline_date, new Date().toISOString()))
       .groupBy(
         activity.id,
         activity.name,
@@ -74,7 +67,6 @@ export const activityRouter = createTRPCRouter({
         organization.name,
         activity.thumbnail_url,
         activity.end_date,
-        activityStatus.name,
         activityCategory1.name,
         activityCategory2.name,
         activityType.name,
@@ -82,7 +74,7 @@ export const activityRouter = createTRPCRouter({
         activity.province,
         organization.logo_url,
       )
-      .orderBy(desc(activity.end_date))
+      .orderBy(desc(activity.created_at))
       .execute();
 
     return result;
@@ -96,6 +88,78 @@ export const activityRouter = createTRPCRouter({
   getActivityType: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.select().from(activityType).execute();
   }),
+
+  getActivityByOrganizationId: publicProcedure
+    .input(
+      z.object({
+        organization_id: z.string().nonempty("Organization ID is required"),
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const activityCategory1 = alias(activityCategory, "activityCategory1");
+      const activityCategory2 = alias(activityCategory, "activityCategory2");
+      const result = await ctx.db
+        .select({
+          activity: activity,
+        })
+        .from(activity)
+        .innerJoin(organization, eq(organization.id, activity.organization_id))
+        .innerJoin(activityType, eq(activityType.id, activity.activity_type_id))
+        .innerJoin(
+          activityCategory1,
+          eq(activityCategory1.id, activity.activity_category_id_1),
+        )
+        .innerJoin(
+          activityCategory2,
+          eq(activityCategory2.id, activity.activity_category_id_2),
+        )
+        .innerJoin(locationType, eq(locationType.id, activity.location_type_id))
+        .where(
+          and(
+            eq(activity.organization_id, input.organization_id),
+            eq(activity.id, input.activity_id),
+          ),
+        )
+        .execute();
+
+      return result[0]?.activity ?? null;
+    }),
+
+  getListActivityByOrganizationId: publicProcedure
+    .input(
+      z.object({
+        organization_id: z.string().nonempty("Organization ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const activityCategory1 = alias(activityCategory, "activityCategory1");
+      const activityCategory2 = alias(activityCategory, "activityCategory2");
+      const result = await ctx.db
+        .select({
+          activity: activity,
+          activityType: activityType.name,
+          locationType: locationType.name,
+          activityCategory1: activityCategory1.name,
+          activityCategory2: activityCategory2.name,
+        })
+        .from(activity)
+        .innerJoin(organization, eq(organization.id, activity.organization_id))
+        .innerJoin(activityType, eq(activityType.id, activity.activity_type_id))
+        .innerJoin(
+          activityCategory1,
+          eq(activityCategory1.id, activity.activity_category_id_1),
+        )
+        .innerJoin(
+          activityCategory2,
+          eq(activityCategory2.id, activity.activity_category_id_2),
+        )
+        .innerJoin(locationType, eq(locationType.id, activity.location_type_id))
+        .where(eq(activity.organization_id, input.organization_id))
+        .execute();
+
+      return result;
+    }),
 
   getActivityDetail: publicProcedure
     .input(
@@ -115,7 +179,6 @@ export const activityRouter = createTRPCRouter({
           activityCategory1: activityCategory1.name,
           activityCategory2: activityCategory2.name,
           activityType: activityType.name,
-          activityStatus: activityStatus.name,
           userActivity: userActivity,
           userActivityStatus: userActivityStatus.name,
         })
@@ -132,10 +195,6 @@ export const activityRouter = createTRPCRouter({
           eq(activityCategory2.id, activity.activity_category_id_2),
         )
         .innerJoin(activityType, eq(activityType.id, activity.activity_type_id))
-        .innerJoin(
-          activityStatus,
-          eq(activityStatus.id, activity.activity_status_id),
-        )
         .leftJoin(userActivity, eq(userActivity.activity_id, activity.id))
         .leftJoin(
           userActivityStatus,
@@ -150,7 +209,6 @@ export const activityRouter = createTRPCRouter({
           activityCategory1.name,
           activityCategory2.name,
           activityType.name,
-          activityStatus.name,
           userActivityStatus.name,
           organization.id,
           userActivity.id,
@@ -171,6 +229,27 @@ export const activityRouter = createTRPCRouter({
         .select()
         .from(activityTimeDetail)
         .where(eq(activityTimeDetail.activity_id, input.activity_id))
+        .execute();
+    }),
+
+  getActivityGalleryByActivityId: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.db
+        .select({
+          activityGallery: activityGallery,
+        })
+        .from(activityGallery)
+        .innerJoin(
+          activityDetail,
+          eq(activityDetail.id, activityGallery.activity_detail_id),
+        )
+        .innerJoin(activity, eq(activity.id, activityDetail.activity_id))
+        .where(eq(activity.id, input.activity_id))
         .execute();
     }),
 
@@ -235,7 +314,6 @@ export const activityRouter = createTRPCRouter({
           activity_person_limit: input.activity_person_limit,
           binusian_only: input.binusian_only,
           require_confirmation: input.require_confirmation,
-          activity_status_id: 1,
           activity_category_id_1: input.activity_category_id_1,
           activity_category_id_2: input.activity_category_id_2,
           location_type_id: input.location_type_id,
@@ -341,8 +419,9 @@ export const activityRouter = createTRPCRouter({
           desc: activityDetail.description,
           company: organization.name,
           thumbnail: activity.thumbnail_url,
+          registration_deadline_date: activity.registration_deadline_date,
+          start_date: activity.start_date,
           end_date: activity.end_date,
-          activityStatus: activityStatus.name,
           activityCategory1: activityCategory1.name,
           activityCategory2: activityCategory2.name,
           activityType: activityType.name,
@@ -350,10 +429,6 @@ export const activityRouter = createTRPCRouter({
         .from(activity)
         .innerJoin(activityDetail, eq(activityDetail.activity_id, activity.id))
         .innerJoin(organization, eq(organization.id, activity.organization_id))
-        .innerJoin(
-          activityStatus,
-          eq(activityStatus.id, activity.activity_status_id),
-        )
         .innerJoin(activityType, eq(activityType.id, activity.activity_type_id))
         .innerJoin(
           activityCategory1,
@@ -370,13 +445,14 @@ export const activityRouter = createTRPCRouter({
           activityDetail.description,
           organization.name,
           activity.thumbnail_url,
+          activity.registration_deadline_date,
+          activity.start_date,
           activity.end_date,
-          activityStatus.name,
           activityCategory1.name,
           activityCategory2.name,
           activityType.name,
         )
-        .orderBy(desc(activity.end_date))
+        .orderBy(desc(activity.created_at))
         .execute();
 
       return result;

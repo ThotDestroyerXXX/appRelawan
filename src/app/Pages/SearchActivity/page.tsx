@@ -21,7 +21,7 @@ export default function SearchActivity() {
         </div>
         <div>
           {!isLoading && listActivity && listActivity.length > 0 ? (
-            <div className="flex flex-row flex-wrap gap-4">
+            <div className="flex flex-row flex-wrap justify-center gap-4">
               {listActivity.map((activity) => (
                 <Link
                   href={`/Pages/activity/${activity.id}`}
@@ -29,7 +29,7 @@ export default function SearchActivity() {
                   shallow={true}
                   prefetch={true}
                 >
-                  <div className="flex min-h-[35rem] max-w-[25rem] flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
+                  <div className="flex min-h-[35rem] w-[22rem] flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
                     {activity.thumbnail && (
                       <Image
                         src={activity.thumbnail}

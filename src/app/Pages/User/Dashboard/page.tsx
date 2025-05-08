@@ -8,6 +8,7 @@ import Spinner from "~/app/Components/Spinner";
 import { authClient } from "~/lib/auth-client";
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";
+import { userActivityStatusText } from "~/lib/utils";
 
 export default function Dashboard() {
   const user_id = authClient.useSession().data?.user.id;
@@ -56,7 +57,14 @@ export default function Dashboard() {
                 {prosesSeleksi.map((proses) => (
                   <div key={proses.activity.id}>
                     <h1>{proses.activity.name}</h1>
-                    <p>Status : {proses.userActivityStatus.name}</p>
+                    <p>
+                      Status :{" "}
+                      {userActivityStatusText(
+                        proses.userActivityStatus.name,
+                        proses.activity.start_date,
+                        proses.activity.end_date,
+                      )}
+                    </p>
                   </div>
                 ))}
               </>
@@ -65,7 +73,7 @@ export default function Dashboard() {
               (!prosesSeleksi || prosesSeleksi.length <= 0) && (
                 <EmptyMessage
                   msg="Belum ada aktivitas, nih!"
-                  link="/Pages/CariAktivitas"
+                  link="/Pages/SearchActivity"
                   placeholderBtn="Cari Aktivitas"
                 />
               )}

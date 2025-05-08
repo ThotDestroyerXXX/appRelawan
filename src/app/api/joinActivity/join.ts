@@ -50,7 +50,7 @@ export const SubmitJoinActivity = (setLoading: (loading: boolean) => void) => {
         await mutateUserActivity({
           user_id: userId,
           activity_id: activityId,
-          user_activity_status_id: 1,
+          user_activity_status_id: 2,
         });
         await utils.invalidate();
         setLoading(false);
