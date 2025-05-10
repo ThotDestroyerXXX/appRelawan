@@ -3,8 +3,8 @@ import { RiInbox2Fill } from "react-icons/ri";
 
 interface EmptyMessageProps {
   msg: string;
-  link: string;
-  placeholderBtn: string;
+  link?: string;
+  placeholderBtn?: string;
 }
 
 export default function EmptyMessage({
@@ -19,11 +19,13 @@ export default function EmptyMessage({
         <h1 className="text-[1.3em]">Belum ada data</h1>
         <p>{msg}</p>
       </div>
-      <Link href={link} className="opacity-100">
-        <button className="rounded-md bg-green-500 pb-2 pl-4 pr-4 pt-2 text-white hover:bg-green-600">
-          {placeholderBtn}
-        </button>
-      </Link>
+      {placeholderBtn && link && (
+        <Link href={link} className="opacity-100">
+          <button className="rounded-md bg-green-500 pb-2 pl-4 pr-4 pt-2 text-white hover:bg-green-600">
+            {placeholderBtn}
+          </button>
+        </Link>
+      )}
     </div>
   );
 }

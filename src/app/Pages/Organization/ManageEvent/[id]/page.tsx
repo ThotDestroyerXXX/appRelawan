@@ -24,7 +24,7 @@ export default function ManageEvent({
       setLoading(false);
     };
     fetchData().catch(() => {
-      return redirect("/Pages/SearchActivity");
+      return redirect("/Pages/activity");
     });
   }, [params]);
 
@@ -47,7 +47,7 @@ export default function ManageEvent({
   }
 
   if ((!id || !userActivity) && !loading && isFetched && !isPending) {
-    redirect("/Pages/SearchActivity");
+    redirect("/Pages/activity");
   }
 
   return (
@@ -75,6 +75,7 @@ export default function ManageEvent({
             <UserDataTable
               userData={userActivityData}
               limit={activity?.activity_person_limit ?? 0}
+              start_date={activity?.start_date ?? ""}
               end_date={activity?.end_date ?? ""}
               setLoading={setLoading}
             />

@@ -46,11 +46,13 @@ export default function ActivityDetail({
     session && activityDetail
       ? (!session && activityDetail?.activity.binusian_only) ||
         (!session?.user.email.endsWith("@binus.ac.id") &&
-          activityDetail?.activity.binusian_only) ||
-        (session?.user.email.endsWith("@binus.ac.id") &&
-          !session?.user.emailVerified &&
           activityDetail?.activity.binusian_only)
       : activityDetail?.activity.binusian_only;
+
+  const binusianOnlyAndEmailVerified =
+    session?.user.email.endsWith("@binus.ac.id") &&
+    !session?.user.emailVerified &&
+    activityDetail?.activity.binusian_only;
 
   // Second Condition: Check if the person limit has been reached
   const isPersonLimitReached =
@@ -67,6 +69,12 @@ export default function ActivityDetail({
     actionComponent = (
       <Button className="h-10 w-full bg-gray-500" type="button" disabled={true}>
         Binusian Only
+      </Button>
+    );
+  } else if (binusianOnlyAndEmailVerified) {
+    actionComponent = (
+      <Button className="h-10 w-full bg-gray-500" type="button" disabled={true}>
+        Email binus belum terverifikasi
       </Button>
     );
   } else if (isPersonLimitReached) {
@@ -106,7 +114,7 @@ export default function ActivityDetail({
   }
 
   if (!activityDetail && !isLoading && isFetched) {
-    return redirect("/Pages/SearchActivity");
+    return redirect("/Pages/activity");
   }
 
   return (

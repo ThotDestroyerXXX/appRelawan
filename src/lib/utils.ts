@@ -81,6 +81,16 @@ export const activityStatusText = (
   }
 };
 
+export const isBeforeOrSameDate = (date1: Date, date2: Date) => {
+  // Compare only the date portion (year, month, day)
+  return (
+    (date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()) ||
+    date1 < date2
+  );
+};
+
 export const userActivityStatusText = (
   status: string,
   start_date: string,

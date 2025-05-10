@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { getListActivity } from "~/app/api/searchActivity/search";
 import { formatDate } from "~/lib/utils";
 import Image from "next/image";
@@ -8,6 +9,12 @@ import Loading from "~/app/Components/loading";
 
 export default function SearchActivity() {
   const { listActivity, isLoading } = getListActivity();
+
+  const [search, setSearch] = useState<string>("");
+
+  const filteredActivities = listActivity?.filter((activity) =>
+    activity.name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <>
@@ -19,24 +26,33 @@ export default function SearchActivity() {
             Cari aktivitas yang ingin anda lakukan
           </p>
         </div>
+        <div className="flex flex-col gap-2">
+          <input
+            type="text"
+            placeholder="Cari aktivitas..."
+            className="rounded border border-gray-300 p-2"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <div>
           {!isLoading && listActivity && listActivity.length > 0 ? (
             <div className="flex flex-row flex-wrap justify-center gap-4">
-              {listActivity.map((activity) => (
+              {filteredActivities?.map((activity) => (
                 <Link
                   href={`/Pages/activity/${activity.id}`}
                   key={activity.id}
                   shallow={true}
                   prefetch={true}
                 >
-                  <div className="flex min-h-[35rem] w-[22rem] flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
+                  <div className="flex min-h-[31rem] max-w-[22rem] flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
                     {activity.thumbnail && (
                       <Image
                         src={activity.thumbnail}
                         alt="Activity Thumbnail"
                         width={200}
                         height={200}
-                        className="h-30 w-full rounded-lg object-cover"
+                        className="h-40 w-full rounded-lg object-cover"
                       />
                     )}
                     <div className="flex flex-row flex-nowrap items-center gap-2 overflow-hidden">

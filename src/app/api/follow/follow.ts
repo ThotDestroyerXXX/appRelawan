@@ -75,3 +75,19 @@ export const unfollowOrganization = ({
   };
   return { handleUnfollowOrganization };
 };
+
+export const getFollowedOrganization = (user_id: string) => {
+  const {
+    data: followedOrganization,
+    isLoading,
+    isFetched,
+  } = api.organization.getFollowedOrganization.useQuery(
+    {
+      user_id,
+    },
+    {
+      enabled: !!user_id,
+    },
+  );
+  return { followedOrganization, isLoading, isFetched };
+};
