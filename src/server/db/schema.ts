@@ -169,9 +169,6 @@ export const activity = createTable("activity", {
   activity_person_limit: integer("activity_person_limit").notNull(),
   binusian_only: boolean("binusian_only").notNull(),
   require_confirmation: boolean("require_confirmation").notNull(),
-  activity_status_id: integer("activity_status_id")
-    .notNull()
-    .references(() => activityStatus.id),
   activity_category_id_1: integer("activity_category_id_1")
     .notNull()
     .references(() => activityCategory.id),
@@ -187,6 +184,9 @@ export const activity = createTable("activity", {
   activity_type_id: integer("activity_type_id")
     .notNull()
     .references(() => activityType.id),
+  created_at: timestamp("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const activityTimeDetail = createTable("activityTimeDetail", {
@@ -197,11 +197,6 @@ export const activityTimeDetail = createTable("activityTimeDetail", {
   activity_id: uuid("activity_id")
     .notNull()
     .references(() => activity.id),
-});
-
-export const activityStatus = createTable("activityStatusType", {
-  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
-  name: varchar("name", { length: 50 }).notNull(),
 });
 
 export const activityDetail = createTable("activityDetail", {
@@ -231,6 +226,9 @@ export const activityRatingReview = createTable("activityRatingReview", {
     .references(() => activity.id),
   rating: integer("rating").notNull(),
   review: text("review").notNull(),
+  created_at: timestamp("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const activityType = createTable("activityType", {

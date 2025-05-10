@@ -15,6 +15,8 @@ import {
   fetchActivityCount,
 } from "~/app/api/HomePage/getList";
 import Spinner from "~/app/Components/Spinner";
+import { Button } from "~/app/Components/button";
+import Link from "next/link";
 
 export default function Home() {
   const organizationCount = fetchOrganizationCount().data;
@@ -23,21 +25,25 @@ export default function Home() {
   return (
     <main className="h-full">
       <div className="relative h-[21rem]">
-        <div className="relative left-0 top-0 flex flex-col items-center gap-[3.5rem] pt-16 text-center text-white">
+        <div className="relative left-0 top-0 flex flex-col items-center gap-[4.5rem] pt-16 text-center text-white max-sm:gap-[6.5rem]">
           <Image
             src={volunteer}
             alt=""
             className="fixed left-0 top-0 z-[-1] h-[25rem] w-screen object-cover object-top brightness-[0.3]"
           />
           <div className="flex flex-col items-center gap-3">
-            <h1 className="text-5xl font-bold">ImpactHub</h1>
-            <h2 className="text-xl">Tempat semua orang saling terhubung</h2>
-            <button className="h-10 w-36 rounded-md bg-[#A2B29F] text-base font-medium text-black hover:bg-[#798777] hover:text-white">
-              Cari Aktivitas
-            </button>
+            <h1 className="text-5xl font-bold max-sm:text-3xl">ImpactHub</h1>
+            <h2 className="text-xl max-sm:text-base">
+              Tempat semua orang saling terhubung
+            </h2>
+            <Link href="/Pages/activity" shallow={true} prefetch={true}>
+              <Button className="h-full rounded-md bg-[#A2B29F] text-base font-medium text-black hover:bg-[#798777] hover:text-white max-sm:text-sm">
+                Cari Aktivitas
+              </Button>
+            </Link>
           </div>
           <div className="flex flex-col items-center gap-6">
-            <div className="flex h-40 w-[60vw] flex-row items-center justify-around rounded-md bg-white pl-4 pr-4 text-black shadow-lg">
+            <div className="flex h-full w-full flex-row flex-wrap items-center justify-around gap-12 rounded-md bg-white p-6 text-black shadow-lg max-sm:gap-6 max-sm:p-4">
               <LandingPageGoodThing
                 jumlah={[
                   userCount ?? <Spinner />,
@@ -51,9 +57,11 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <section className="items-center bg-[#F8EDE3] text-center">
+      <section className="items-center bg-[#F8EDE3] p-4 text-center">
         <div className="pb-10 pt-36">
-          <h1 className="text-center text-4xl font-bold">Layanan ImpactHub</h1>
+          <h1 className="text-center text-4xl font-bold max-sm:text-3xl">
+            Layanan ImpactHub
+          </h1>
         </div>
         <div className="flex flex-row flex-wrap items-center justify-center gap-10 pl-10 pr-10">
           <LayananImpactHubCard

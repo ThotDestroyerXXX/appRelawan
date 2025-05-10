@@ -1,8 +1,11 @@
-import { eq, and } from "drizzle-orm";
+import { eq, and, count, lt, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import {
   activity,
+  activityRatingReview,
+  organization,
+  user,
   userActivity,
   userActivityApply,
   userActivityStatus,
@@ -24,6 +27,7 @@ export const userActivityRouter = createTRPCRouter({
           userActivityStatus,
           eq(userActivity.user_activity_status_id, userActivityStatus.id),
         )
+        .innerJoin(organization, eq(activity.organization_id, organization.id))
         .where(eq(userActivity.user_id, input.user_id))
         .execute()
         .catch((err: string) => {
@@ -127,5 +131,176 @@ export const userActivityRouter = createTRPCRouter({
         .returning({ id: userActivityApply.user_activity_id })
         .execute();
       return result;
+    }),
+  getUserActivityApplyByAtivityId: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { activity_id } = input;
+      return await ctx.db
+        .select({
+          user: user,
+          userActivityApply: userActivityApply,
+          userActivity: userActivity,
+          userActivityStatus: userActivityStatus.name,
+        })
+        .from(userActivity)
+        .innerJoin(user, eq(user.id, userActivity.user_id))
+        .leftJoin(
+          userActivityApply,
+          eq(userActivity.id, userActivityApply.user_activity_id),
+        )
+        .innerJoin(
+          userActivityStatus,
+          eq(userActivityStatus.id, userActivity.user_activity_status_id),
+        )
+        .where(eq(userActivity.activity_id, activity_id))
+        .execute();
+    }),
+
+  getUserActivityData: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { activity_id } = input;
+      return await ctx.db
+        .select({
+          userActivity: userActivity,
+          userActivityApply: userActivityApply,
+          user: user,
+          userActivityStatus: userActivityStatus.name,
+        })
+        .from(userActivity)
+        .innerJoin(user, eq(user.id, userActivity.user_id))
+        .leftJoin(
+          userActivityApply,
+          eq(userActivity.id, userActivityApply.user_activity_id),
+        )
+        .innerJoin(
+          userActivityStatus,
+          eq(userActivityStatus.id, userActivity.user_activity_status_id),
+        )
+        .where(eq(userActivity.activity_id, activity_id))
+        .execute();
+    }),
+
+  updateUserActivityStatus: publicProcedure
+    .input(
+      z.object({
+        id: z.string().nonempty("User activity ID is required"),
+        user_activity_status_id: z
+          .number()
+          .nonnegative("User activity status ID is required"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, user_activity_status_id } = input;
+      return await ctx.db
+        .update(userActivity)
+        .set({ user_activity_status_id })
+        .where(eq(userActivity.id, id))
+        .returning({ id: userActivity.id })
+        .execute();
+    }),
+
+  getUserActivityCount: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { activity_id } = input;
+      const result = await ctx.db
+        .select({ count: count(userActivity.id) })
+        .from(userActivity)
+        .where(eq(userActivity.activity_id, activity_id))
+        .execute();
+      return result[0]?.count ?? 0;
+    }),
+
+  getFinishedUserActivityByUserId: publicProcedure
+    .input(
+      z.object({
+        user_id: z.string().nonempty("User ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { user_id } = input;
+      return await ctx.db
+        .select({
+          userActivity: userActivity,
+          activity: activity,
+          organization: organization,
+          userActivityStatus: userActivityStatus.name,
+        })
+        .from(userActivity)
+        .innerJoin(
+          userActivityStatus,
+          eq(userActivityStatus.id, userActivity.user_activity_status_id),
+        )
+        .innerJoin(activity, eq(activity.id, userActivity.activity_id))
+        .leftJoin(
+          activityRatingReview,
+          and(
+            eq(activityRatingReview.user_id, userActivity.user_id),
+            eq(activityRatingReview.activity_id, activity.id),
+          ),
+        )
+        .innerJoin(organization, eq(organization.id, activity.organization_id))
+        .where(
+          and(
+            eq(userActivity.user_id, user_id),
+            eq(userActivityStatus.name, "Diterima"),
+            lt(activity.end_date, new Date().toISOString()),
+            isNull(activityRatingReview.rating),
+          ),
+        )
+        .execute();
+    }),
+
+  getTestimonyByUserId: publicProcedure
+    .input(
+      z.object({
+        user_id: z.string().nonempty("User ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { user_id } = input;
+      return await ctx.db
+        .select({
+          userActivity: userActivity,
+          activity: activity,
+          organization: organization,
+          userActivityStatus: userActivityStatus.name,
+          activityRatingReview: activityRatingReview,
+        })
+        .from(userActivity)
+        .innerJoin(
+          userActivityStatus,
+          eq(userActivityStatus.id, userActivity.user_activity_status_id),
+        )
+        .innerJoin(activity, eq(activity.id, userActivity.activity_id))
+        .innerJoin(
+          activityRatingReview,
+          and(
+            eq(activityRatingReview.user_id, userActivity.user_id),
+            eq(activityRatingReview.activity_id, activity.id),
+          ),
+        )
+        .innerJoin(organization, eq(organization.id, activity.organization_id))
+        .where(
+          and(
+            eq(userActivity.user_id, user_id),
+            eq(userActivityStatus.name, "Diterima"),
+          ),
+        )
+        .execute();
     }),
 });

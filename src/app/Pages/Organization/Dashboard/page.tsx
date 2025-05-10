@@ -1,11 +1,13 @@
 // DUMMY PAGE UNTUK VERIFIKASI ORGANISASI
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { fetchOrganizationActivity } from "~/app/api/organization/dashboard";
 import { Button } from "~/app/Components/button";
 import EmptyMessage from "~/app/Components/EmptyMessage";
 import Spinner from "~/app/Components/Spinner";
 import { useSession } from "~/hooks/use-session";
+import { activityStatusText } from "~/lib/utils";
 
 export default function OrganizationPage() {
   const session = useSession();
@@ -17,7 +19,7 @@ export default function OrganizationPage() {
   );
 
   return (
-    <main className="flex flex-col gap-6 bg-[#F8EDE3] pb-10 pl-10 pr-10">
+    <main className="flex flex-col gap-6 bg-[#F8EDE3] p-10">
       <h1 className="text-[2em] font-bold">Dashboard</h1>
       <section className="flex min-h-80 flex-col rounded-lg bg-white shadow-md">
         <div className="relative flex h-full flex-col gap-5 p-5">
@@ -28,11 +30,11 @@ export default function OrganizationPage() {
             {isLoading && <Spinner />}
             {!isLoading && organizationActivity && (
               <>
-                <hr className="mb-5 border-[1px] border-gray-500" />
+                <hr className="mb-2 border-[1px] border-gray-500" />
                 {organizationActivity.map((proses) => (
                   <div
                     key={proses.id}
-                    className="flex flex-col justify-between gap-5"
+                    className="flex flex-col justify-between gap-5 py-2"
                   >
                     <div className="flex flex-row justify-between gap-5">
                       <div className="flex flex-row gap-5">
@@ -47,15 +49,18 @@ export default function OrganizationPage() {
                         )}
 
                         <div className="flex flex-col gap-2">
-                          <h1>{proses.name}</h1>
-                          <p>Status : {proses.activityStatus}</p>
+                          <h1 className="line-clamp-1 break-all">
+                            {proses.name}
+                          </h1>
+                          <p>
+                            Status :{" "}
+                            {activityStatusText(
+                              proses.registration_deadline_date,
+                              proses.start_date,
+                              proses.end_date,
+                            )}
+                          </p>
                         </div>
-                        <p className="h-fit rounded-lg bg-gray-200 p-2 text-sm">
-                          {proses.activityCategory1}
-                        </p>
-                        <p className="h-fit rounded-lg bg-gray-200 p-2 text-sm">
-                          {proses.activityCategory2}
-                        </p>
                       </div>
                       <div>
                         <p className="h-fit rounded-full bg-gray-200 p-2 text-sm">
@@ -69,9 +74,13 @@ export default function OrganizationPage() {
                       </p>
                     </div>
                     <div>
-                      <Button className="bg-green-500 text-white hover:bg-green-700">
-                        Manage
-                      </Button>
+                      <Link
+                        href={`/Pages/Organization/ManageEvent/${proses.id}`}
+                      >
+                        <Button className="bg-green-500 text-white hover:bg-green-700">
+                          Manage
+                        </Button>
+                      </Link>
                     </div>
                     <hr className="border-[1px] border-gray-500" />
                   </div>
