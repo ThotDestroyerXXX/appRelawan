@@ -457,4 +457,30 @@ export const activityRouter = createTRPCRouter({
 
       return result;
     }),
+
+  createActivityRatingReview: publicProcedure
+    .input(
+      z.object({
+        user_id: z.string().nonempty("User ID is required"),
+        activity_id: z.string().nonempty("Activity ID is required"),
+        rating: z.number().min(1, "Rating harus diberikan!").max(5),
+        review: z
+          .string()
+          .nonempty("Testimoni harus diisi!")
+          .max(1000, "Testimoni harus kurang dari 1000 karakter!")
+          .min(20, "Testimoni harus lebih dari 20 karakter!"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { user_id, activity_id, rating, review } = input;
+      return await ctx.db
+        .insert(activityRatingReview)
+        .values({
+          user_id,
+          activity_id,
+          rating,
+          review,
+        })
+        .execute();
+    }),
 });

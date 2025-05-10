@@ -25,6 +25,7 @@ import {
   followOrganization,
   unfollowOrganization,
 } from "~/app/api/follow/follow";
+import guestImage from "~/app/Assets/guest.png";
 
 export default function OrganizationDetailPage({
   params,
@@ -41,7 +42,7 @@ export default function OrganizationDetailPage({
       setLoading(false);
     };
     fetchData().catch(() => {
-      return redirect("/Pages/SearchActivity");
+      return redirect("/Pages/activity");
     });
   }, [params]);
 
@@ -253,26 +254,32 @@ export default function OrganizationDetailPage({
         </div>
         <div className="flex flex-col gap-2 rounded-md bg-white p-6 shadow-md">
           <h2 className="text-lg font-semibold">Follower</h2>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-row flex-wrap gap-10 break-all">
             {organizationFollower && organizationFollower.length > 0 ? (
               organizationFollower.map((follower) => (
                 <div
                   key={follower.followOrganization.user_id}
-                  className="flex flex-row items-center gap-2 rounded-md bg-white p-4 shadow-md"
+                  className="flex flex-row items-center gap-2"
                 >
-                  {follower.user.image && (
+                  {follower.user.image ? (
                     <Image
                       src={follower.user.image}
                       alt="Profile Picture"
                       width={50}
                       height={50}
-                      className="h-20 w-20 rounded-full object-cover"
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <Image
+                      src={guestImage}
+                      alt="Profile Picture"
+                      width={50}
+                      height={50}
+                      className="h-8 w-8 rounded-full object-cover"
                     />
                   )}
-                  <div className="ml-4 flex flex-col">
-                    <h3 className="text-lg font-semibold">
-                      {follower.user.name}
-                    </h3>
+                  <div className="flex flex-col">
+                    <p>{follower.user.name}</p>
                   </div>
                 </div>
               ))

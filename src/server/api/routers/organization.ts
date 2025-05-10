@@ -160,33 +160,18 @@ export const organizationRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       return await ctx.db
         .select({
-          id: organization.id,
-          name: organization.name,
-          province: organization.province,
-          city: organization.city,
-          logo_url: organization.logo_url,
+          organization: organization,
           totalFollower: count(followOrganization.organization_id),
           totalActivity: count(activity.id),
-          organizationRating: avg(organizationRatingReview.rating),
         })
         .from(followOrganization)
         .innerJoin(
           organization,
           eq(followOrganization.organization_id, organization.id),
         )
-        .innerJoin(activity, eq(organization.id, activity.organization_id))
-        .innerJoin(
-          organizationRatingReview,
-          eq(organization.id, organizationRatingReview.organization_id),
-        )
+        .leftJoin(activity, eq(organization.id, activity.organization_id))
         .where(eq(followOrganization.user_id, input.user_id))
-        .groupBy(
-          organization.id,
-          organization.name,
-          organization.province,
-          organization.city,
-          organization.logo_url,
-        )
+        .groupBy(organization.id)
         .execute();
     }),
 

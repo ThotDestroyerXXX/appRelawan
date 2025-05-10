@@ -17,12 +17,13 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { type Session } from "~/lib/auth";
 import chad from "~/app/Assets/chad.jpg";
 import Image from "next/image";
+import { PenLine } from "lucide-react";
 
 const items = [
   { title: "Home", url: "/", icon: <FaHome /> },
   {
     title: "Cari Aktivitas",
-    url: "/Pages/SearchActivity",
+    url: "/Pages/activity",
     icon: <FaPeopleCarry />,
   },
   {
@@ -60,6 +61,11 @@ const userMenu = [
     title: "Dashboard Relawan",
     url: "/Pages/User/Dashboard",
     icon: <MdDashboard />,
+  },
+  {
+    title: "Buat Testimoni",
+    url: "/Pages/User/MakeTestimony",
+    icon: <PenLine />,
   },
 ];
 

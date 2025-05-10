@@ -226,6 +226,9 @@ export const activityRatingReview = createTable("activityRatingReview", {
     .references(() => activity.id),
   rating: integer("rating").notNull(),
   review: text("review").notNull(),
+  created_at: timestamp("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const activityType = createTable("activityType", {

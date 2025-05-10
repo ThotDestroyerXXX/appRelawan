@@ -9,6 +9,7 @@ import {
 } from "./ui/table";
 import { Button } from "./button";
 import { UpdateUserActivityStatus } from "../api/ManageActivity/manage";
+import { isBeforeOrSameDate } from "~/lib/utils";
 
 const actionButton = (
   status: string,
@@ -74,11 +75,13 @@ const actionButton = (
 export function UserDataTable({
   userData,
   limit,
+  start_date,
   end_date,
   setLoading,
 }: Readonly<{
   userData: UserDataTableProps[];
   limit: number;
+  start_date: string;
   end_date: string;
   setLoading: (loading: boolean) => void;
 }>) {
@@ -147,11 +150,13 @@ export function UserDataTable({
                 </>
               )}
               <TableCell className="flex flex-row justify-center gap-2">
-                {(userData.filter(
-                  (data) => data.userActivityStatus === "Diterima",
-                ).length < limit ||
-                  data.userActivityStatus !== "Dalam Review" ||
-                  new Date() <= new Date(end_date)) &&
+                {isBeforeOrSameDate(new Date(), new Date(end_date)) &&
+                  (data.userActivityStatus !== "Dalam Review" ||
+                    (data.userActivityStatus === "Dalam Review" &&
+                      isBeforeOrSameDate(new Date(), new Date(start_date)) &&
+                      userData.filter(
+                        (data) => data.userActivityStatus === "Diterima",
+                      ).length < limit)) &&
                   actionButton(
                     data.userActivityStatus,
                     data.userActivity.id,
