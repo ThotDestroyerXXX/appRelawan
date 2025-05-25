@@ -1,12 +1,15 @@
 const CHUNK_PUBLIC_PATH = "server/app/api/trpc/[trpc]/route.js";
 const runtime = require("../../../../chunks/[turbopack]_runtime.js");
+runtime.loadChunk("server/chunks/[root of the server]__91fd87._.js");
 runtime.loadChunk("server/chunks/2365d_next_dist_6315b0._.js");
 runtime.loadChunk("server/chunks/65cfb_@trpc_server_dist_d50cf3._.js");
 runtime.loadChunk("server/chunks/cdf59_zod_lib_index_mjs_c12735._.js");
-runtime.loadChunk("server/chunks/918fe_drizzle-orm_cceab1._.js");
+runtime.loadChunk("server/chunks/918fe_drizzle-orm_d50679._.js");
+runtime.loadChunk("server/chunks/a371a_better-auth_dist_955706._.js");
+runtime.loadChunk("server/chunks/a49ca_jose_dist_node_esm_c12f93._.js");
+runtime.loadChunk("server/chunks/6d50d_kysely_dist_esm_093fdc._.js");
 runtime.loadChunk("server/chunks/ac6c9_@trpc_client_dist_a71091._.js");
-runtime.loadChunk("server/chunks/node_modules__pnpm_3a6709._.js");
-runtime.loadChunk("server/chunks/[root of the server]__3d51ea._.js");
+runtime.loadChunk("server/chunks/node_modules__pnpm_240b45._.js");
 runtime.loadChunk("server/chunks/_cee4c2._.js");
 runtime.getOrInstantiateRuntimeModule("[project]/.next-internal/server/app/api/trpc/[trpc]/route/actions.js [app-rsc] (ecmascript)", CHUNK_PUBLIC_PATH);
 module.exports = runtime.getOrInstantiateRuntimeModule("[project]/node_modules/.pnpm/next@15.1.7_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/trpc/[trpc]/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)", CHUNK_PUBLIC_PATH).exports;

@@ -1,15 +1,12 @@
 {
   "app": {
-    "[project]/src/app/page": [
+    "[project]/src/app/Pages/Home/page": [
       "static/media/Geist_Variable-s.p.781b491f.woff2"
     ],
-    "[project]/src/app/Pages/signUp/page": [
+    "[project]/src/app/Pages/SearchOrganization/page": [
       "static/media/Geist_Variable-s.p.781b491f.woff2"
     ],
     "[project]/src/app/_not-found/page": [
-      "static/media/Geist_Variable-s.p.781b491f.woff2"
-    ],
-    "[project]/src/app/Pages/signIn/page": [
       "static/media/Geist_Variable-s.p.781b491f.woff2"
     ]
   },
