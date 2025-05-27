@@ -53,9 +53,9 @@ export default function ManageEvent({
   return (
     <>
       {(loading || isPending) && <Loading />}
-      <div className="flex flex-col items-center gap-4 bg-[#F8EDE3] p-5">
+      <div className="flex min-h-screen flex-col items-center gap-4 bg-[#F8EDE3] p-5">
         <h1 className="text-[2em] font-bold">Manage Event</h1>
-        <div className="flex w-full flex-1 flex-col items-center gap-4">
+        <div className="flex w-full flex-col items-center gap-4">
           {activity?.thumbnail_url && (
             <Image
               src={activity?.thumbnail_url}
