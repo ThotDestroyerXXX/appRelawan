@@ -230,7 +230,7 @@ export default function OrganizationDetailPage({
                           </p>
                         </div>
                       </div>
-                      <div>
+                      <div className="block max-sm:hidden">
                         <p className="h-fit rounded-full bg-gray-200 p-2 text-sm">
                           {proses.activityType}
                         </p>
