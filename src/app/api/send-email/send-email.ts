@@ -1,5 +1,3 @@
-import { authClient } from "~/lib/auth-client";
-
 export async function sendEmail({
   to,
   subject,
@@ -22,18 +20,4 @@ export async function sendEmail({
     console.error("Error sending email:", error);
     throw new Error("Failed to send email");
   }
-}
-
-export function sendVerificationEmail() {
-  const handleClick = async (email: string) => {
-    try {
-      await authClient.sendVerificationEmail({
-        email,
-      });
-    } catch (error) {
-      console.error("Error sending verification email:", error);
-      throw new Error("Failed to send verification email");
-    }
-  };
-  return { handleClick };
 }
