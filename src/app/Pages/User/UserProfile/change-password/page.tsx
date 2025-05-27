@@ -1,10 +1,10 @@
 import { HydrateClient } from "~/trpc/server";
-import UserProfileSection from "./user-profile-section";
+import ChangePasswordSection from "./change-password-section";
 import { auth } from "~/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-const UserProfile = async () => {
+export default async function Page() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -15,9 +15,7 @@ const UserProfile = async () => {
 
   return (
     <HydrateClient>
-      <UserProfileSection user={session.user} />
+      <ChangePasswordSection user={session.user} />
     </HydrateClient>
   );
-};
-
-export default UserProfile;
+}

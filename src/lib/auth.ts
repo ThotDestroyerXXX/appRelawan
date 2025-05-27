@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { sendEmail } from "~/app/api/send-email/send-email";
 import { db } from "~/server/db"; // your drizzle instance
 
 export const auth = betterAuth({
@@ -9,6 +10,16 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Verify your email address",
+        text: `Click the link to verify your email: <a href="${url}">Click here</a>`,
+      });
+    },
+  },
+
   socialProviders: {
     //microsoft: {
     //    clientId: process.env.MICROSOFT_CLIENT_ID as string,
