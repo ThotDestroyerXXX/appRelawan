@@ -145,3 +145,36 @@ export const getListActivityByOrganizationId = ({
     isFetched,
   };
 };
+
+export const CancelActivity = (setLoading: (loading: boolean) => void) => {
+  const utils = api.useUtils();
+  const { mutate } = api.activity.deleteActivity.useMutation({
+    onMutate: () => {
+      setLoading(true);
+    },
+    onSuccess: async () => {
+      await utils.invalidate();
+      setLoading(false);
+    },
+    onError: (error) => {
+      showErrorMessage(error);
+      setLoading(false);
+    },
+  });
+
+  const handleCancelActivity = ({ activity_id }: { activity_id: string }) => {
+    setLoading(true);
+    try {
+      mutate({
+        activity_id: activity_id,
+      });
+    } catch (error) {
+      console.error("Error canceling activity:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return {
+    handleCancelActivity,
+  };
+};

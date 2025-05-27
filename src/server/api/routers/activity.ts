@@ -403,7 +403,7 @@ export const activityRouter = createTRPCRouter({
         .execute();
     }),
 
-  getOrganizationActivity: publicProcedure
+   getOrganizationActivity: publicProcedure
     .input(
       z.object({
         organization_id: z.string().nonempty("User ID is required"),
@@ -481,6 +481,19 @@ export const activityRouter = createTRPCRouter({
           rating,
           review,
         })
+        .execute();
+    }),
+
+  deleteActivity: publicProcedure
+    .input(
+      z.object({
+        activity_id: z.string().nonempty("Activity ID is required"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db
+        .delete(activity)
+        .where(eq(activity.id, input.activity_id))
         .execute();
     }),
 });
