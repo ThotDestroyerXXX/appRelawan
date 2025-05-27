@@ -64,49 +64,56 @@ export default function Dashboard() {
             {!isLoadingProsesSeleksi && prosesSeleksi && (
               <>
                 {prosesSeleksi.map((proses) => (
-                  <div key={proses.activity.id} className="flex flex-col gap-2">
-                    <div className="flex flex-row items-center gap-5 rounded-lg bg-white p-4 shadow-md max-sm:flex-col">
-                      {proses.activity.thumbnail_url && (
-                        <Image
-                          src={proses.activity.thumbnail_url}
-                          alt="hehe"
-                          width={200}
-                          height={200}
-                          className="w-52 rounded-lg object-cover max-sm:w-full"
-                        />
-                      )}
-                      <div className="flex flex-col gap-2">
-                        <h1 className="line-clamp-1 break-all">
-                          {proses.activity.name}
-                        </h1>
+                  <Link
+                    key={proses.activity.id}
+                    href={`/Pages/activity/${proses.activity.id}`}
+                    shallow={true}
+                    prefetch={true}
+                  >
+                    <div className="flex flex-col gap-2">
+                      <div className="flex flex-row items-center gap-5 rounded-lg bg-white p-4 shadow-md max-sm:flex-col">
+                        {proses.activity.thumbnail_url && (
+                          <Image
+                            src={proses.activity.thumbnail_url}
+                            alt="hehe"
+                            width={200}
+                            height={200}
+                            className="w-52 rounded-lg object-cover max-sm:w-full"
+                          />
+                        )}
+                        <div className="flex flex-col gap-2">
+                          <h1 className="line-clamp-1 break-all">
+                            {proses.activity.name}
+                          </h1>
 
-                        <div className="flex flex-row items-center gap-2">
-                          {proses.organization.logo_url && (
-                            <Image
-                              src={proses.organization.logo_url}
-                              alt="hehe"
-                              width={50}
-                              height={50}
-                              className="h-8 w-8 rounded-full object-cover"
-                            />
-                          )}
-                          <div className="flex flex-col gap-1">
-                            <h1 className="text-sm text-gray-500">
-                              {proses.organization.name}
-                            </h1>
+                          <div className="flex flex-row items-center gap-2">
+                            {proses.organization.logo_url && (
+                              <Image
+                                src={proses.organization.logo_url}
+                                alt="hehe"
+                                width={50}
+                                height={50}
+                                className="h-8 w-8 rounded-full object-cover"
+                              />
+                            )}
+                            <div className="flex flex-col gap-1">
+                              <h1 className="text-sm text-gray-500">
+                                {proses.organization.name}
+                              </h1>
+                            </div>
                           </div>
+                          <p className="text-sm">
+                            Status :{" "}
+                            {userActivityStatusText(
+                              proses.userActivityStatus.name,
+                              proses.activity.start_date,
+                              proses.activity.end_date,
+                            )}
+                          </p>
                         </div>
-                        <p className="text-sm">
-                          Status :{" "}
-                          {userActivityStatusText(
-                            proses.userActivityStatus.name,
-                            proses.activity.start_date,
-                            proses.activity.end_date,
-                          )}
-                        </p>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </>
             )}

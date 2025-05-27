@@ -20,11 +20,6 @@ const Navbar = ({ session }: { session: Session | null }) => {
       <div className="z-10 flex h-14 w-full items-center justify-between bg-[#798777] pb-2 pl-5 pr-5 pt-2 text-white shadow-lg">
         <div className="z-10 flex items-center gap-5">
           <SidebarTrigger />
-          <Image
-            src={chad}
-            alt="chad"
-            className="h-11 w-11 rounded-full object-cover"
-          />
         </div>
         <div className="z-10 flex gap-6">
           <Link href="/" shallow={true} prefetch={true}>
