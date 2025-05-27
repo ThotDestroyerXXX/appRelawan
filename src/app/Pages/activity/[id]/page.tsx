@@ -41,6 +41,8 @@ export default function ActivityDetail({
 
   const { handleSubmit } = SubmitJoinActivity(setLoading);
 
+  const emailNotVerified = !session?.user.emailVerified;
+
   // First Condition: Check if the user is not a Binusian and the activity is Binusian-only
   const isBinusianOnly =
     session && activityDetail
@@ -51,7 +53,7 @@ export default function ActivityDetail({
 
   const binusianOnlyAndEmailVerified =
     session?.user.email.endsWith("@binus.ac.id") &&
-    !session?.user.emailVerified &&
+    emailNotVerified &&
     activityDetail?.activity.binusian_only;
 
   // Second Condition: Check if the person limit has been reached
@@ -65,7 +67,13 @@ export default function ActivityDetail({
   // Render the appropriate component based on the conditions
   let actionComponent;
 
-  if (isBinusianOnly) {
+  if (emailNotVerified) {
+    actionComponent = (
+      <Button className="h-10 w-full bg-gray-500" type="button" disabled={true}>
+        Verifikasi Email Terlebih Dahulu
+      </Button>
+    );
+  } else if (isBinusianOnly) {
     actionComponent = (
       <Button className="h-10 w-full bg-gray-500" type="button" disabled={true}>
         Binusian Only
@@ -129,7 +137,7 @@ export default function ActivityDetail({
                 alt="hehe"
                 width={500}
                 height={500}
-                className="h-full w-full rounded-lg object-cover"
+                className="h-full w-full rounded-lg object-contain"
               />
             )}
           </div>
