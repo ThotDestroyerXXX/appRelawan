@@ -15,8 +15,8 @@ const SignIn = () => {
   return (
     <>
       {isPending && <Loading />}
-      <div className="flex flex-col items-center justify-center overflow-hidden">
-        <div className="flex h-[calc(100vh-4rem)] w-full flex-col items-center gap-4 overflow-hidden bg-cream pt-5">
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex h-[calc(100vh-4rem)] w-full flex-col items-center gap-4 overflow-hidden bg-cream pl-3 pr-3 pt-5">
           <Image
             src={chad}
             alt="chad"
@@ -25,7 +25,7 @@ const SignIn = () => {
           <h2 className="text-3xl font-bold">Sign In</h2>
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
+            className="flex w-full max-w-md flex-col items-center gap-3 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
           >
             <SignForm
               label={["Email", "Password"]}
@@ -34,7 +34,7 @@ const SignIn = () => {
               disabled={isPending}
               error={errors}
             />
-            <div className="w-screen max-w-sm">
+            <div className="w-full max-w-sm">
               <div className="flex flex-row items-center gap-2">
                 <input
                   type="checkbox"

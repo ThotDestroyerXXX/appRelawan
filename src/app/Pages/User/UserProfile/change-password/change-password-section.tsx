@@ -13,13 +13,11 @@ export default function ChangePasswordSection({
   const [loading, setLoading] = useState(false);
   const { handleChangePassword } = ChangePassword(setLoading);
   return (
-    <main className="flex min-h-screen flex-col gap-6 bg-[#F8EDE3] p-10">
+    <main className="flex min-h-screen flex-col gap-6 bg-[#F8EDE3]">
       {loading && <Loading />}
       <div className="flex min-h-screen flex-col gap-6 bg-[#F8EDE3] p-10">
-        <h1 className="mb-4 text-2xl font-bold">Change Password</h1>
-        <p className="mb-6 text-gray-600">
-          Please enter your new password below.
-        </p>
+        <h1 className="text-2xl font-bold">Change Password</h1>
+        <p className="text-gray-600">Please enter your new password below.</p>
         <form
           onSubmit={(e) => {
             e.preventDefault();

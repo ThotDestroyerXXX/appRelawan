@@ -19,7 +19,7 @@ const SignUpOrg = () => {
   const [selectedWard, setSelectedWard] = useState<TerritoryProps | null>(null);
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex h-full w-full flex-col items-center gap-4 bg-cream pb-5 pt-5">
+      <div className="flex h-full w-full flex-col items-center gap-4 bg-cream pb-5 pl-3 pr-3 pt-5">
         <Image
           src={chad}
           alt="chad"
@@ -37,7 +37,7 @@ const SignUpOrg = () => {
               selectedWard ?? undefined,
             )
           }
-          className="flex flex-col items-center gap-6 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
+          className="flex w-full max-w-md flex-col items-center gap-6 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
         >
           <SignForm
             label={[
@@ -85,7 +85,7 @@ const SignUpOrg = () => {
             disabled={isPending}
             labelPlaceholder="Organisasi"
           />
-          <div className="flex w-screen max-w-sm flex-col">
+          <div className="flex w-full max-w-sm flex-col">
             <label
               htmlFor="deskripsiOrganisasi"
               className="text-sm text-gray-700"

@@ -69,7 +69,7 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
   return (
     <>
       {timeFields.map((timeField, index) => (
-        <div key={timeField.id} className="flex flex-row gap-6">
+        <div key={timeField.id} className="flex flex-row gap-2 max-md:flex-col">
           <div className="flex w-full flex-col">
             <label
               htmlFor={`day-${index}`}
@@ -116,7 +116,7 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
             >
               Waktu Selesai
             </label>
-            <div className="flex flex-row gap-3">
+            <div className="flex flex-row items-center gap-3 max-sm:flex-col">
               <input
                 type="time"
                 id={`time-${index}`}
@@ -125,7 +125,7 @@ const DayTimeForm: React.FC<DayTimeFormProps> = ({
                 value={finishFields[index]?.value}
                 onChange={(e) => handleFinishChange(index, e)}
               />
-              <div className="flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm bg-red-500 text-white hover:bg-red-600">
+              <div className="flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm bg-red-500 text-white hover:bg-red-600 max-md:h-8 max-md:w-full">
                 <FaTrashAlt
                   onClick={(e) => {
                     e.preventDefault();

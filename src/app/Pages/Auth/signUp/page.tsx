@@ -9,7 +9,7 @@ const SignUp = () => {
   const { handleSubmit, isPending, errors } = useSignUp();
   return (
     <div className="flex flex-col items-center justify-center overflow-hidden">
-      <div className="flex h-[calc(100vh-4rem)] w-full flex-col items-center gap-4 overflow-hidden bg-cream pt-5">
+      <div className="flex h-[calc(100vh-4rem)] w-full flex-col items-center gap-4 overflow-hidden bg-cream pl-3 pr-3 pt-5">
         <Image
           src={chad}
           alt="chad"
@@ -20,7 +20,7 @@ const SignUp = () => {
           onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
             handleSubmit(false, e)
           }
-          className="flex flex-col items-center gap-3 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
+          className="flex w-full max-w-md flex-col items-center gap-3 rounded-lg border-[1px] border-black bg-sageGreen p-10 shadow-lg"
         >
           <SignForm
             label={["Username", "Email", "Password"]}
@@ -36,7 +36,7 @@ const SignUp = () => {
           <button
             type="submit"
             disabled={isPending}
-            className="w-screen max-w-sm rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
+            className="w-full max-w-sm rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:outline-green-500 disabled:opacity-50"
           >
             Submit
           </button>

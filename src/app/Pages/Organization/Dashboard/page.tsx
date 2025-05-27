@@ -66,7 +66,7 @@ export default function OrganizationPage() {
                         </div>
                       </div>
                       <div>
-                        <p className="h-fit rounded-full bg-gray-200 p-2 text-sm">
+                        <p className="h-fit rounded-full bg-gray-200 p-2 text-sm max-sm:hidden">
                           {proses.activityType}
                         </p>
                       </div>
