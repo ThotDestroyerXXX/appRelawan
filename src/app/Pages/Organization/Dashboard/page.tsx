@@ -2,15 +2,18 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { fetchOrganizationActivity } from "~/app/api/organization/dashboard";
 import { Button } from "~/app/Components/button";
+import CancelActivityDialog from "~/app/Components/CancelActivityDialog";
 import EmptyMessage from "~/app/Components/EmptyMessage";
 import Spinner from "~/app/Components/Spinner";
 import { useSession } from "~/hooks/use-session";
-import { activityStatusText } from "~/lib/utils";
+import { activityStatusText, isBeforeOrSameDate } from "~/lib/utils";
 
 export default function OrganizationPage() {
   const session = useSession();
+  const [loading, setLoading] = useState(false);
 
   console.log(session?.user.organization_id);
 
@@ -27,7 +30,7 @@ export default function OrganizationPage() {
             <h1 className="text-2xl">Event Anda</h1>
           </div>
           <div>
-            {isLoading && <Spinner />}
+            {(isLoading || loading) && <Spinner />}
             {!isLoading && organizationActivity && (
               <>
                 <hr className="mb-2 border-[1px] border-gray-500" />
@@ -73,7 +76,7 @@ export default function OrganizationPage() {
                         {proses.desc}
                       </p>
                     </div>
-                    <div>
+                    <div className="flex flex-row flex-wrap gap-2">
                       <Link
                         href={`/Pages/Organization/ManageEvent/${proses.id}`}
                       >
@@ -81,6 +84,15 @@ export default function OrganizationPage() {
                           Manage
                         </Button>
                       </Link>
+                      {isBeforeOrSameDate(
+                        new Date(),
+                        new Date(proses.registration_deadline_date),
+                      ) && (
+                        <CancelActivityDialog
+                          setLoading={setLoading}
+                          activityId={proses.id}
+                        />
+                      )}
                     </div>
                     <hr className="border-[1px] border-gray-500" />
                   </div>
