@@ -1,11 +1,4 @@
-import { type Session } from "~/lib/auth";
-// import VerifyButton from "./verify-button";
-
-export default function VerifyEmailSection({
-  user,
-}: Readonly<{
-  user: Session["user"];
-}>) {
+export default function VerifyEmailSection() {
   return (
     <div className="flex flex-col items-center justify-center gap-4 p-6">
       <h1 className="text-2xl font-bold">Verify Your Email</h1>

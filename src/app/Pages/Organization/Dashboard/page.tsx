@@ -3,13 +3,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { fetchOrganizationActivity } from "~/app/api/organization/dashboard";
+import {
+  fetchOrganizationActivity,
+  getOrganizationFollowerByOrganizationId,
+  getOrganizationTestimony,
+} from "~/app/api/organization/dashboard";
 import { Button } from "~/app/Components/button";
 import CancelActivityDialog from "~/app/Components/CancelActivityDialog";
 import EmptyMessage from "~/app/Components/EmptyMessage";
 import Spinner from "~/app/Components/Spinner";
 import { useSession } from "~/hooks/use-session";
 import { activityStatusText, isBeforeOrSameDate } from "~/lib/utils";
+import guestImage from "~/app/Assets/guest.png";
+import { FaStar } from "react-icons/fa";
 
 export default function OrganizationPage() {
   const session = useSession();
@@ -18,6 +24,14 @@ export default function OrganizationPage() {
   console.log(session?.user.organization_id);
 
   const { organizationActivity, isLoading } = fetchOrganizationActivity(
+    session?.user.organization_id ?? "",
+  );
+
+  const { organizationFollower } = getOrganizationFollowerByOrganizationId(
+    session?.user.organization_id ?? "",
+  );
+
+  const { organizationTestimony } = getOrganizationTestimony(
     session?.user.organization_id ?? "",
   );
 
@@ -110,39 +124,97 @@ export default function OrganizationPage() {
           </div>
         </div>
       </section>
-      <section className="flex h-80 flex-col rounded-lg bg-white shadow-md">
-        <div className="relative flex h-full flex-col justify-between p-5">
-          <div>
-            <h2>Followed Organisasi</h2>
-          </div>
-          {/* <div>
-            {isLoading && <Spinner />}
-            {!isLoading && organizationActivity && (
-              <>
-                {followedOrganization.map((proses) => (
-                  <div key={proses.id}>
-                    <h1>{proses.name}</h1>
-                    <p>
-                      {proses.city}, {proses.province}
-                    </p>
-                    <div className="flex flex-row gap-6">
-                      <p>{proses.totalActivity} Aktivitas</p>
-                      <p>{proses.totalFollower} Pendukung</p>
-                      <p>Rating: {proses.organizationRating}</p>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-            {!isLoadingFollowedOrganization &&
-              (!followedOrganization || followedOrganization.length <= 0) && (
-                <EmptyMessage
-                  msg="Belum ada organisasi yang diikuti, nih!"
-                  link="/Pages/CariOrganisasi"
-                  placeholderBtn="Cari Organisasi"
-                />
-              )}
-          </div> */}
+      <section className="flex flex-col gap-2 rounded-lg bg-white p-6 shadow-md">
+        <h2 className="text-lg font-semibold">Follower</h2>
+        <div className="flex flex-row flex-wrap gap-10 break-all">
+          {organizationFollower && organizationFollower.length > 0 ? (
+            organizationFollower.map((follower) => (
+              <div
+                key={follower.followOrganization.user_id}
+                className="flex flex-row items-center gap-2"
+              >
+                {follower.user.image ? (
+                  <Image
+                    src={follower.user.image}
+                    alt="Profile Picture"
+                    width={50}
+                    height={50}
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={guestImage}
+                    alt="Profile Picture"
+                    width={50}
+                    height={50}
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                )}
+                <div className="flex flex-col">
+                  <p>{follower.user.name}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex items-center p-4">
+              <p>Organisasi ini belum mempunyai pengikut</p>
+            </div>
+          )}
+        </div>
+      </section>
+      <section className="flex flex-col gap-2 rounded-lg bg-white p-6 shadow-md">
+        <h2 className="text-lg font-semibold">Testimoni</h2>
+        <div className="flex flex-col gap-4">
+          {organizationTestimony && organizationTestimony.length > 0 ? (
+            organizationTestimony.map((testimony) => (
+              <div
+                key={testimony.userActivity.id}
+                className="flex flex-col gap-2 border-b pb-2"
+              >
+                <p className="break-all font-semibold">{testimony.user.name}</p>
+                <div className="flex flex-row gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <FaStar
+                      key={star}
+                      className={`h-4 w-4 cursor-pointer ${
+                        star <= testimony.activityRatingReview.rating
+                          ? "text-yellow-500"
+                          : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">
+                    {new Date(
+                      testimony.activityRatingReview.created_at,
+                    ).toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
+                <div>
+                  <Link
+                    className="break-all text-sm text-gray-500"
+                    href={`/Pages/activity/${testimony.activity.id}`}
+                    prefetch={true}
+                    shallow={true}
+                  >
+                    {testimony.activity.name}
+                  </Link>
+                </div>
+                <p className="break-all">
+                  {testimony.activityRatingReview.review}
+                </p>
+              </div>
+            ))
+          ) : (
+            <div className="flex items-center p-4">
+              <p>Belum ada testimoni</p>
+            </div>
+          )}
         </div>
       </section>
     </main>

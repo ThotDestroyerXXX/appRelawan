@@ -303,4 +303,45 @@ export const userActivityRouter = createTRPCRouter({
         )
         .execute();
     }),
+
+  getTestimonyByOrganizationId: publicProcedure
+    .input(
+      z.object({
+        organization_id: z.string().nonempty("Organization ID is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { organization_id } = input;
+      return await ctx.db
+        .select({
+          userActivity: userActivity,
+          activity: activity,
+          organization: organization,
+          userActivityStatus: userActivityStatus.name,
+          activityRatingReview: activityRatingReview,
+          user: user,
+        })
+        .from(userActivity)
+        .innerJoin(
+          userActivityStatus,
+          eq(userActivityStatus.id, userActivity.user_activity_status_id),
+        )
+        .innerJoin(activity, eq(activity.id, userActivity.activity_id))
+        .innerJoin(
+          activityRatingReview,
+          and(
+            eq(activityRatingReview.user_id, userActivity.user_id),
+            eq(activityRatingReview.activity_id, activity.id),
+          ),
+        )
+        .innerJoin(organization, eq(organization.id, activity.organization_id))
+        .innerJoin(user, eq(user.id, userActivity.user_id))
+        .where(
+          and(
+            eq(organization.id, organization_id),
+            eq(userActivityStatus.name, "Diterima"),
+          ),
+        )
+        .execute();
+    }),
 });

@@ -52,3 +52,17 @@ export const getOrganizationFollowerByOrganizationId = (id: string) => {
   );
   return { organizationFollower, isLoading, isFetched };
 };
+
+export const getOrganizationTestimony = (id: string) => {
+  const {
+    data: organizationTestimony,
+    isLoading,
+    isFetched,
+  } = api.userActivity.getTestimonyByOrganizationId.useQuery(
+    { organization_id: id },
+    {
+      enabled: !!id,
+    },
+  );
+  return { organizationTestimony, isLoading, isFetched };
+};

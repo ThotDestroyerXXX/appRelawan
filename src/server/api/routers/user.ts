@@ -15,7 +15,20 @@ export const userRouter = createTRPCRouter({
   }),
 
   updateUser: publicProcedure
-    .input(z.object({ id: z.string(), newName: z.string() }))
+    .input(
+      z.object({
+        id: z.string().nonempty({
+          message: "User ID must not be empty!",
+        }),
+        newName: z
+          .string()
+          .nonempty({ message: "Name must not be empty!" })
+          .min(3, { message: "Name must be at least 3 characters long!" })
+          .max(50, {
+            message: "Name must be at most 50 characters long!",
+          }),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const existUser = await ctx.db.query.user.findFirst({
         where: (users, { eq }) => eq(users.id, input.id),
