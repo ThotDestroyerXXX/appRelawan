@@ -6,6 +6,7 @@ import {
   fetchOrganizationActivity,
   getOrganizationDetail,
   getOrganizationFollowerByOrganizationId,
+  getOrganizationTestimony,
 } from "~/app/api/organization/dashboard";
 import Loading from "~/app/Components/loading";
 import Image from "next/image";
@@ -26,6 +27,7 @@ import {
   unfollowOrganization,
 } from "~/app/api/follow/follow";
 import guestImage from "~/app/Assets/guest.png";
+import { FaStar } from "react-icons/fa";
 
 export default function OrganizationDetailPage({
   params,
@@ -58,6 +60,8 @@ export default function OrganizationDetailPage({
   const { organizationDetail, isLoading, isFetched } = getOrganizationDetail(
     id ?? "",
   );
+
+  const { organizationTestimony } = getOrganizationTestimony(id ?? "");
 
   return (
     <div className="flex flex-col gap-4 bg-[#F8EDE3] p-4">
@@ -290,6 +294,63 @@ export default function OrganizationDetailPage({
             )}
           </div>
         </div>
+        <section className="flex flex-col gap-2 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="text-lg font-semibold">Testimoni</h2>
+          <div className="flex flex-col gap-4">
+            {organizationTestimony && organizationTestimony.length > 0 ? (
+              organizationTestimony.map((testimony) => (
+                <div
+                  key={testimony.userActivity.id}
+                  className="flex flex-col gap-2 border-b pb-2"
+                >
+                  <p className="break-all font-semibold">
+                    {testimony.user.name}
+                  </p>
+                  <div className="flex flex-row gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <FaStar
+                        key={star}
+                        className={`h-4 w-4 cursor-pointer ${
+                          star <= testimony.activityRatingReview.rating
+                            ? "text-yellow-500"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">
+                      {new Date(
+                        testimony.activityRatingReview.created_at,
+                      ).toLocaleDateString("id-ID", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <div>
+                    <Link
+                      className="break-all text-sm text-gray-500"
+                      href={`/Pages/activity/${testimony.activity.id}`}
+                      prefetch={true}
+                      shallow={true}
+                    >
+                      {testimony.activity.name}
+                    </Link>
+                  </div>
+                  <p className="break-all">
+                    {testimony.activityRatingReview.review}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="flex items-center p-4">
+                <p>Belum ada testimoni</p>
+              </div>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
