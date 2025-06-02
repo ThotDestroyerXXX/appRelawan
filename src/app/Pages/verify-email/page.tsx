@@ -26,7 +26,7 @@ export default async function VerifyEmailPage() {
 
   return (
     <HydrateClient>
-      <VerifyEmailSection user={session.user} />
+      <VerifyEmailSection />
     </HydrateClient>
   );
 }
